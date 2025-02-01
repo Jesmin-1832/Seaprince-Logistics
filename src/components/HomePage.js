@@ -1,27 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../assets/css/home.css";
-import { Grid, Button, Select, MenuItem, FormControl, InputLabel, TextField } from "@mui/material";
+import { Grid, Button, TextField } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import FromPage from "./FromPage";
+import ToPage from "./ToPage";
 
 function HomePage() {
     const [tabValue, setTabValue] = useState(0);
     const [animationClass, setAnimationClass] = useState("enter");
-    const [fromLocation, setFromLocation] = useState("Nhava Sheva (INNSA)");
-    const [toLocation, setToLocation] = useState("Southampton (GBSOU)");
+    const [fromLocation, setFromLocation] = useState("Select From");
+    const [toLocation, setToLocation] = useState("Select To");
+    const [showFromPage, setShowFromPage] = useState(false);
+    const [showToPage, setShowToPage] = useState(false);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const state = location.state || {};
+        const from = state.from;
+        const to = state.to;
+        if (from) setFromLocation(from);
+        if (to) setToLocation(to);
+    }, [location]);
 
     const handleTabChange = (newValue) => {
         setAnimationClass("exit");
         setTimeout(() => {
             setTabValue(newValue);
             setAnimationClass("enter");
-        }, 300); // Match the duration of the fadeOut animation
+        }, 300);
     };
 
-    const handleFromChange = (event) => {
-        setFromLocation(event.target.value);
+    const handleFromClick = () => {
+        navigate("/from", { state: { to: toLocation }, replace: true });
     };
 
-    const handleToChange = (event) => {
-        setToLocation(event.target.value);
+    const handleToClick = () => {
+        navigate("/to", { state: { from: fromLocation }, replace: true });
+    };
+
+    const handleFromSelect = (location) => {
+        setFromLocation(location);
+        setShowFromPage(false);
+    };
+
+    const handleToSelect = (location) => {
+        setToLocation(location);
+        setShowToPage(false);
     };
 
     return (
@@ -49,33 +75,19 @@ function HomePage() {
                 {tabValue === 0 && (
                     <div className={`home_form ${animationClass}`}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} sm={6}>
-                                <FormControl fullWidth variant="outlined">
-                                    <InputLabel>From</InputLabel>
-                                    <Select
-                                        value={fromLocation}
-                                        onChange={handleFromChange}
-                                        label="From"
-                                    >
-                                        <MenuItem value="Nhava Sheva (INNSA)">Nhava Sheva (INNSA)</MenuItem>
-                                        <MenuItem value="Mumbai (INBOM)">Mumbai (INBOM)</MenuItem>
-                                        <MenuItem value="Chennai (INMAA)">Chennai (INMAA)</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <FormControl fullWidth variant="outlined">
-                                    <InputLabel>To</InputLabel>
-                                    <Select
-                                        value={toLocation}
-                                        onChange={handleToChange}
-                                        label="To"
-                                    >
-                                        <MenuItem value="Southampton (GBSOU)">Southampton (GBSOU)</MenuItem>
-                                        <MenuItem value="New York (USNYC)">New York (USNYC)</MenuItem>
-                                        <MenuItem value="Los Angeles (USLAX)">Los Angeles (USLAX)</MenuItem>
-                                    </Select>
-                                </FormControl>
+                            <Grid item xs={12}>
+                                <div className="form-box">
+                                    <div className="form-section" onClick={handleFromClick}>
+                                        <h2>From</h2>
+                                        <p>{fromLocation}</p>
+                                        <span>IN NSA</span>
+                                    </div>
+                                    <div className="form-section" onClick={handleToClick}>
+                                        <h2>To</h2>
+                                        <p>{toLocation}</p>
+                                        <span>GB SOU</span>
+                                    </div>
+                                </div>
                             </Grid>
                             <Grid item xs={12}>
                                 <Button variant="contained" color="primary" fullWidth>
@@ -148,6 +160,20 @@ function HomePage() {
                                 </Button>
                             </Grid>
                         </Grid>
+                    </div>
+                )}
+                {showFromPage && (
+                    <div className="overlay">
+                        <div className="overlay-content">
+                            <FromPage onSelect={handleFromSelect} />
+                        </div>
+                    </div>
+                )}
+                {showToPage && (
+                    <div className="overlay">
+                        <div className="overlay-content">
+                            <ToPage onSelect={handleToSelect} />
+                        </div>
                     </div>
                 )}
             </div>

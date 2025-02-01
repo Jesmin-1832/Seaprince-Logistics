@@ -14,7 +14,7 @@ function Home() {
         setNavValue(newValue);
         switch (newValue) {
             case 0:
-                navigate("/home");
+                navigate("/");
                 break;
             case 1:
                 navigate("/services");
