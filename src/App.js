@@ -2,27 +2,75 @@ import './App.css';
 import HomePage from './components/HomePage';
 import ServicesPage from './components/ServicesPage';
 import SchedulePage from './components/SchedulePage';
+import FromPage from './components/FromPage';
+import ToPage from './components/ToPage';
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'; 
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded';
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
+import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
   const [navValue, setNavValue] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/":
+        setNavValue(0);
+        break;
+      case "/services":
+        setNavValue(1);
+        break;
+      case "/schedule":
+        setNavValue(2);
+        break;
+      default:
+        break;
+    }
+  }, [location.pathname]);
 
   const handleNavigationChange = (event, newValue) => {
     setNavValue(newValue);
+    switch (newValue) {
+      case 0:
+        navigate("/", { replace: true });
+        break;
+      case 1:
+        navigate("/services", { replace: true });
+        break;
+      case 2:
+        navigate("/schedule", { replace: true });
+        break;
+      default:
+        break;
+    }
   };
+
+  const hideHeaderPaths = ["/from", "/to"];
 
   return (
     <div className="App">
       <div className='main'>
-        <Header />
-        {navValue === 0 && <HomePage />}
-        {navValue === 1 && <ServicesPage />}
-        {navValue === 2 && <SchedulePage />}
+        {!hideHeaderPaths.includes(location.pathname) && <Header />}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/schedule" element={<SchedulePage />} />
+          <Route path="/from" element={<FromPage />} />
+          <Route path="/to" element={<ToPage />} />
+        </Routes>
         <BottomNav navValue={navValue} handleNavigationChange={handleNavigationChange} />
       </div>
     </div>
