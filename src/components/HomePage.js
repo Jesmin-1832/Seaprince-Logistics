@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FromPage from "./FromPage";
 import ToPage from "./ToPage";
   
-function HomePage() { 
+function HomePage() {  
     const [tabValue, setTabValue] = useState(0);
     const [animationClass, setAnimationClass] = useState("enter");
     const [fromLocation, setFromLocation] = useState("Select From");
