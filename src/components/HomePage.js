@@ -10,7 +10,7 @@ function HomePage() {
     const [animationClass, setAnimationClass] = useState("enter");
     const [fromLocation, setFromLocation] = useState("Select From");
     const [toLocation, setToLocation] = useState("Select To");
-    const [showFromPage, setShowFromPage] = useState(false);
+    const [showFromPage, setShowFromPage] = useState(false); 
     const [showToPage, setShowToPage] = useState(false);
 
     const location = useLocation();
