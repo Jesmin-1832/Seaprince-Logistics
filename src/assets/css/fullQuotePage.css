@@ -1,0 +1,45 @@
+.full-quote-page {
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.full-quote-page-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.full-quote-page-header h2 {
+    margin-left: 10px;
+    font-size: 24px;
+    color: #333;
+}
+
+.full-quote-page-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.quote-details {
+    text-align: center;
+}
+
+.quote-details h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.quote-details img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.quote-details p {
+    font-size: 16px;
+    color: #666;
+    margin: 5px 0;
+}
