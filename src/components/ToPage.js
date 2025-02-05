@@ -26,11 +26,13 @@ function ToPage() {
         const state = location.state || {};
         const from = state.from;
         navigate("/", { state: { from, to: toLocation }, replace: true });
+        window.location.reload();
     };
 
     const handleBackClick = () => {
         const state = location.state || {};
         navigate("/", { state, replace: true });
+        window.location.reload();
     };
 
     const filteredRecentLocations = recentLocations.filter(location =>

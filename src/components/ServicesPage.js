@@ -1,9 +1,12 @@
 import React from "react";
+import "../assets/css/services.css"
 
 function ServicesPage() {
     return (
         <div>
-            <h1>Services Page</h1>
+            <div className="services_section">
+                <h1>Services Page</h1>
+            </div>
         </div>
     );
 }

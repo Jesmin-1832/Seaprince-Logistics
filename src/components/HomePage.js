@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../assets/css/home.css";
-import { Grid, Button, TextField } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import FromPage from "./FromPage";
 import ToPage from "./ToPage";
@@ -116,9 +116,7 @@ function HomePage() {
                                     </div>
                                 </Grid>
                                 {error && (
-                                    <Grid item xs={12}>
                                         <p className="error-message">{error}</p>
-                                    </Grid>
                                 )}
                                 <Grid item xs={12}>
                                     <Button variant="contained" color="primary" fullWidth onClick={handleSearch}>
@@ -129,65 +127,27 @@ function HomePage() {
                         </div>
                     )}
                     {tabValue === 1 && (
-                        <div className={`home_form ${animationClass}`}>
+                             <div className={`home_form ${animationClass}`}>
                             <Grid container spacing={3}>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Origin"
-                                        variant="outlined"
-                                        value="Mumbai (INBOM)"
-                                        disabled
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Destination"
-                                        variant="outlined"
-                                        value="New York (USNYC)"
-                                        disabled
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Product"
-                                        variant="outlined"
-                                        value="Mango"
-                                        disabled
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Container Type"
-                                        variant="outlined"
-                                        value="20GP"
-                                        disabled
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Loading Location"
-                                        variant="outlined"
-                                        value="Pune, Maharashtra"
-                                        disabled
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        fullWidth
-                                        label="Arrival Date"
-                                        variant="outlined"
-                                        value="15 Feb 2025, Saturday"
-                                        disabled
-                                    />
-                                </Grid>
-
                                 <Grid item xs={12}>
-                                    <Button variant="contained" color="primary" fullWidth>
+                                    <div className="form-box">
+                                        <div className="form-section" onClick={handleFromClick}>
+                                            <h2>From</h2>
+                                            <p>{fromLocation}</p>
+                                            <span>IN NSA</span>
+                                        </div>
+                                        <div className="form-section" onClick={handleToClick}>
+                                            <h2>To</h2>
+                                            <p>{toLocation}</p>
+                                            <span>GB SOU</span>
+                                        </div>
+                                    </div>
+                                </Grid>
+                                {error && (
+                                        <p className="error-message">{error}</p>
+                                )}
+                                <Grid item xs={12}>
+                                    <Button variant="contained" color="primary" fullWidth onClick={handleSearch}>
                                         Search
                                     </Button>
                                 </Grid>

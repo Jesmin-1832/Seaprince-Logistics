@@ -31,7 +31,7 @@ function Home() {
 
     return (
         <div className="home_content">
-            <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0, maxWidth: "575px", margin: "0 auto", zIndex:99 }} elevation={3}>
+            <Paper elevation={3}>
                 <BottomNavigation
                     showLabels
                     value={navValue}

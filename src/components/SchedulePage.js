@@ -1,9 +1,12 @@
 import React from "react";
+import "../assets/css/schedule.css"
 
 function SchedulePage() {
     return (
         <div>
-            <h1>Schedule Page</h1>
+            <div className="schedule_section">
+                <h1>Schedule Page</h1>
+            </div>
         </div>
     );
 }
