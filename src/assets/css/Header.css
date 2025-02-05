@@ -25,8 +25,11 @@ header nav ul li a{
     text-decoration: none;
     font-weight: bold;
     outline: none;
+    display: grid;
 }
 header nav img {
+    width: 40px;
+    max-height: 40px;
     width: auto;
     object-fit: contain;
 }

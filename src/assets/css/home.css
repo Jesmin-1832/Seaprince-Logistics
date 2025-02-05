@@ -1,8 +1,9 @@
-.home-page{
+.home-page {
     color: var(--black-color);
     padding-bottom: 60px;
     overflow: hidden;
 }
+
 
 /* Home Content  */
 
@@ -85,24 +86,24 @@
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(100px) scaleX(0.2);
+        /* transform: scaleX(0); */
     }
 
     to {
         opacity: 1;
-        transform: translateY(0) scaleX(1);
+        /* transform: scaleX(1); */
     }
 }
 
 @keyframes fadeOut {
     from {
         opacity: 1;
-        transform: translateY(0) scaleX(1);
+        /* transform: scaleX(1); */
     }
 
     to {
         opacity: 0;
-        transform: translateY(100px) scaleX(0.2);
+        /* transform: scaleX(0); */
     }
 }
 
@@ -131,7 +132,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #ccc;
+    border: 1px solid darkgray;
     padding: 20px;
     border-radius: 10px;
 }
@@ -149,16 +150,16 @@
 }
 
 .home-page .home_content .home_form .form-section h2 {
-    color: grey;
-    font-size: 16px;
+    color: rgb(75, 75, 75);
+    font-size: 14px;
     font-weight: normal;
 }
 
 .home-page .home_content .home_form .form-section p {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
-    color: black;
-    margin: 10px 0;
+    color: var(--primary-color);
+    margin: 5px 0;
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -166,7 +167,8 @@
 }
 
 .home-page .home_content .home_form .form-section span {
-    color: grey;
+    color: rgb(75, 75, 75);
+    font-size: 14px;
 }
 
 .home-page .home_content .overlay {
@@ -188,25 +190,6 @@
     border-radius: 10px;
     max-width: 500px;
     width: 90%;
-}
-
-.home-page .home_content .page-header {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: var(--white-color);
-}
-
-.home-page .home_content .page-header h1 {
-    flex: 1;
-    text-align: center;
-    margin: 0;
-    font-size: 20px;
-}
-
-.home-page .home_content .page-header svg {
-    cursor: pointer;
 }
 
 /* Home Content End  */
@@ -249,9 +232,10 @@
 }
 
 .home-page .home_carousel .swiper-item-content p {
-    font-size: 20px;
+    font-size: 18px;
     color: var(--primary-color);
 }
+
 .home-page .home_carousel .swiper-item img {
     width: 50px;
     height: 50px;
@@ -260,12 +244,12 @@
 
 .home-page .home_carousel .swiper-item h2 {
     margin-bottom: 10px;
-    font-size: 20px;
+    font-size: 18px;
     color: var(--primary-color);
 }
 
 .home-page .home_carousel .swiper-item p {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: var(--black-color);
 }
@@ -316,10 +300,10 @@
     position: absolute;
     top: -10px;
     left: 10%;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: normal;
     color: var(--white-color);
-    padding: 10px 25px ;
+    padding: 10px 25px;
     background-color: var(--secondary-color);
     border-radius: 5px;
     box-shadow: 0 2px 10px 0 rgba(255, 255, 255, 0.2);
@@ -340,7 +324,7 @@
 }
 
 .home-img-sec .text-content p {
-    font-size: 18px;
+    font-size: 16px;
     color: var(--white-color);
 }
 
@@ -360,9 +344,21 @@
 
 /* Home Image Section End */
 
+
+.css-cnic6m-MuiPaper-root {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 575px;
+    margin: 0 auto;
+    z-index: 99;
+}
+
 .error-message {
     color: red;
     font-size: 14px;
-    margin-top: -10px;
-    margin-bottom: 10px;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-left: 24px;
 }

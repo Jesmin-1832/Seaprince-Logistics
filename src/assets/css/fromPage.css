@@ -101,14 +101,14 @@
     transition: 0.2s all;
 }
 .from-page .from-page-content .from-page-inner ul li:hover div h2 {
-    color: var(--secondary-color);
+    color: var(--btn-hover-color);
 }
 .from-page .from-page-content .from-page-inner ul li div p {
     font-size: 16px;
     color: rgb(57, 57, 57);
 }
 .from-page .from-page-content .from-page-inner ul li div span {
-    color: var(--secondary-color);
+    color: var(--btn-hover-color);
 }
 .from-page .from-page-content .from-page-inner .noDataFound{
     text-align: center;
