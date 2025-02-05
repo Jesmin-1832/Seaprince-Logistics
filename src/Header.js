@@ -6,14 +6,14 @@ function Header() {
             <nav>
                 <ul>
                     <li>
-                        <a href="">
+                        <a href=" ">
                             {/* <img src={require("./assets/image/Seaprince-white.png")} alt="Logo" /> */}
                             LOGO
                         </a>
                     </li>
                     <li>
-                        <a href="">
-                            <img src={require("./assets/image/user-logo.png")} alt="Profile" height={50} />
+                        <a href=" ">
+                            <img src={require("./assets/image/user-logo.png")} alt="Profile"  />
                         </a>
                     </li>
                 </ul>

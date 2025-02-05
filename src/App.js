@@ -13,7 +13,6 @@ import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import Home from './components/Home';
 
 function App() {
   return (
@@ -64,13 +63,13 @@ function AppContent() {
     }
   };
 
-  const hideHeaderPaths = ["/from", "/to", "/results"];
+  const hideHeaderPaths = ["/from", "/to", "/results", "/full-quote"];
+  const hideBottomNavPaths = ["/full-quote"];
 
   return (
     <div className="App">
       <div className='main'>
         {!hideHeaderPaths.includes(location.pathname) && <Header />}
-        <Home />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/services" element={<ServicesPage />} />
@@ -80,7 +79,9 @@ function AppContent() {
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/full-quote" element={<FullQuotePage />} />
         </Routes>
-        <BottomNav navValue={navValue} handleNavigationChange={handleNavigationChange} />
+        {!hideBottomNavPaths.includes(location.pathname) && (
+          <BottomNav navValue={navValue} handleNavigationChange={handleNavigationChange} />
+        )}
       </div>
     </div>
   );
