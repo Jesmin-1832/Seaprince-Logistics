@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../assets/css/home.css";
 import { Grid, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,30 +8,25 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { LocationContext } from '../context/LocationContext';
 
 function HomePage() {
     const [tabValue, setTabValue] = useState(0);
     const [animationClass, setAnimationClass] = useState("enter");
-    const [fromLocation, setFromLocation] = useState("Select From");
-    const [toLocation, setToLocation] = useState("Select To");
     const [showFromPage, setShowFromPage] = useState(false);
     const [showToPage, setShowToPage] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
 
+    const { fromLocation, setFromLocation, toLocation, setToLocation } = useContext(LocationContext);
+
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const state = location.state || {};
-        const from = state.from;
-        const to = state.to;
-        if (from) setFromLocation(from);
-        if (to) setToLocation(to);
-
         const timer = setTimeout(() => setLoading(false), 1000);
         return () => clearTimeout(timer);
-    }, [location]);
+    }, []);
 
     const handleTabChange = (newValue) => {
         setAnimationClass("exit");
@@ -43,22 +38,20 @@ function HomePage() {
 
     const handleFromClick = () => {
         navigate("/from", { state: { to: toLocation }, replace: true });
-        window.location.reload();
     };
 
     const handleToClick = () => {
         navigate("/to", { state: { from: fromLocation }, replace: true });
-        window.location.reload();
     };
 
     const handleFromSelect = (location) => {
         setFromLocation(location);
-        setShowFromPage(false);
+        navigate("/", { replace: true });
     };
 
     const handleToSelect = (location) => {
         setToLocation(location);
-        setShowToPage(false);
+        navigate("/", { replace: true });
     };
 
     const handleSearch = () => {

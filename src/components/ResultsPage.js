@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CallSharpIcon from '@mui/icons-material/CallSharp';
@@ -7,25 +7,69 @@ import 'swiper/swiper-bundle.min.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import "../assets/css/resultsPage.css";
+import { LocationContext } from '../context/LocationContext';
 
 function ResultsPage() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { from, to } = location.state || {};
+    const { fromLocation, toLocation, results, setResults, setSelectedResult } = useContext(LocationContext);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setTimeout(() => setLoading(false), 1500);
-    }, []);
+        // Fetch results data and set it in context
+        const fetchedResults = [
+            {
+                name: "Ship Name",
+                imgSrc: require("../assets/image/why-choose-icon1.png"),
+                startDate: "07 Feb",
+                endDate: "11 Feb",
+                days: "1 Day",
+                stations: "Direct",
+                price: "$ 1,100",
+                containersAvailable: "2 Container Available",
+            },
+            {
+                name: "Ship Name",
+                imgSrc: require("../assets/image/why-choose-icon2.png"),
+                startDate: "08 Feb",
+                endDate: "12 Feb",
+                days: "2 Days",
+                stations: "Direct",
+                price: "$ 1,200",
+                containersAvailable: "3 Container Available",
+            },
+            {
+                name: "Ship Name",
+                imgSrc: require("../assets/image/why-choose-icon6.png"),
+                startDate: "09 Feb",
+                endDate: "13 Feb",
+                days: "4 Days",
+                stations: " AUH",
+                price: "$ 1,300",
+                containersAvailable: "1 Container Available",
+            },
+            {
+                name: "Ship Name",
+                imgSrc: require("../assets/image/why-choose-icon4.png"),
+                startDate: "10 Feb",
+                endDate: "14 Feb",
+                days: "5 Days",
+                stations: "Direct",
+                price: "$ 1,400",
+                containersAvailable: "4 Container Available",
+            }
+        ];
+        setResults(fetchedResults);
+    }, [setResults]);
 
     const handleBackClick = () => {
-        navigate("/", { state: { from, to }, replace: true });
-        window.location.reload();
+        navigate("/", { state: { from: fromLocation, to: toLocation }, replace: true });
     };
 
     const handleFullQuoteClick = (result) => {
-        navigate("/full-quote", { state: { result, from, to } });
-        window.location.reload();
+        setSelectedResult(result);
+        navigate("/full-quote", { state: { from: fromLocation, to: toLocation } });
     };
 
     const slides = [
@@ -34,54 +78,11 @@ function ResultsPage() {
         { title: "OCEAN BREEZE", date: "07 Feb", day: "Fri" },
     ];
 
-    const results = [
-        {
-            name: "Ship Name",
-            imgSrc: require("../assets/image/why-choose-icon1.png"),
-            startDate: "07 Feb",
-            endDate: "11 Feb",
-            days: "1 Day",
-            stations: "Direct",
-            price: "$ 1,100",
-            containersAvailable: "2 Container Available",
-        },
-        {
-            name: "Ship Name",
-            imgSrc: require("../assets/image/why-choose-icon2.png"),
-            startDate: "08 Feb",
-            endDate: "12 Feb",
-            days: "2 Days",
-            stations: "Direct",
-            price: "$ 1,200",
-            containersAvailable: "3 Container Available",
-        },
-        {
-            name: "Ship Name",
-            imgSrc: require("../assets/image/why-choose-icon6.png"),
-            startDate: "09 Feb",
-            endDate: "13 Feb",
-            days: "4 Days",
-            stations: " AUH",
-            price: "$ 1,300",
-            containersAvailable: "1 Container Available",
-        },
-        {
-            name: "Ship Name",
-            imgSrc: require("../assets/image/why-choose-icon4.png"),
-            startDate: "10 Feb",
-            endDate: "14 Feb",
-            days: "5 Days",
-            stations: "Direct",
-            price: "$ 1,400",
-            containersAvailable: "4 Container Available",
-        }
-    ];
-
     return (
         <div className="results-page">
             <div className="results-page-header">
                 <ArrowBackIcon onClick={handleBackClick} />
-                <h2>{from} To {to}</h2>
+                <h2>{fromLocation} To {toLocation}</h2>
             </div>
             <div className="results-page-content">
                 <h2>Upcoming Vessels</h2>

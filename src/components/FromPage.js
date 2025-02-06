@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../assets/css/fromPage.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { LocationContext } from '../context/LocationContext';
 
 function FromPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState("");
+    const { setFromLocation } = useContext(LocationContext);
 
     const recentLocations = [
         { name: "Nhava Sheva", country: "India, Maharashtra", code: "IN NSA" },
@@ -23,16 +25,15 @@ function FromPage() {
     ];
 
     const handleSelect = (fromLocation) => {
+        setFromLocation(fromLocation);
         const state = location.state || {};
         const to = state.to;
         navigate("/", { state: { from: fromLocation, to }, replace: true });
-        window.location.reload();
     };
 
     const handleBackClick = () => {
         const state = location.state || {};
         navigate("/", { state, replace: true });
-        window.location.reload();
     };
 
     const filteredRecentLocations = recentLocations.filter(location =>

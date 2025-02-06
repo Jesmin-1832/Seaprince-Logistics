@@ -13,11 +13,14 @@ import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { LocationProvider } from './context/LocationContext';
 
 function App() {
   return (
     <Router>
-      <AppContent />
+      <LocationProvider>
+        <AppContent />
+      </LocationProvider>
     </Router>
   );
 }
@@ -48,15 +51,12 @@ function AppContent() {
     switch (newValue) {
       case 0:
         navigate("/", { replace: true });
-        window.location.reload();
         break;
       case 1:
         navigate("/services", { replace: true });
-        window.location.reload();
         break;
       case 2:
         navigate("/schedule", { replace: true });
-        window.location.reload();
         break;
       default:
         break;

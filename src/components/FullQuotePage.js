@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
@@ -7,11 +7,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import "../assets/css/fullQuotePage.css";
+import { LocationContext } from '../context/LocationContext';
 
 function FullQuotePage() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { result, from, to } = location.state || {};
+    const { fromLocation, toLocation, selectedResult } = useContext(LocationContext);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [tabValue, setTabValue] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -41,7 +42,7 @@ function FullQuotePage() {
         <div className="full-quote-page">
             <div className="full-quote-page-header">
                 <ArrowBackIcon onClick={handleBackClick} />
-                <h2>{from} To {to}</h2>
+                <h2>{fromLocation} To {toLocation}</h2>
             </div>
             <div className="full-quote-page-content">
                 {loading ? (
@@ -74,15 +75,15 @@ function FullQuotePage() {
                         </div>
                     </div>
                 ) : (
-                    result ? (
+                    selectedResult ? (
                         <div className="quote-details">
-                            <img src={result.imgSrc} alt="" />
+                            <img src={selectedResult.imgSrc} alt="" />
                             <div className="quote-details-content">
-                                <h2>{result.name}</h2>
-                                <p>Carrier: {result.stations}</p>
+                                <h2>{selectedResult.name}</h2>
+                                <p>Carrier: {selectedResult.stations}</p>
                                 <div className="quote-content-inner">
-                                    <p>{result.startDate} 2025 <span>ETD</span></p>
-                                    <p>{result.endDate} 2025 <span>ETA</span></p>
+                                    <p>{selectedResult.startDate} 2025 <span>ETD</span></p>
+                                    <p>{selectedResult.endDate} 2025 <span>ETA</span></p>
                                 </div>
                             </div>
                         </div>
@@ -94,34 +95,36 @@ function FullQuotePage() {
                     {loading ? (
                         <Skeleton height={300} baseColor="#d3d3d3" highlightColor="#ffffffab" />
                     ) : (
-                        <>
-                            <div className="pricing-heading">
-                                <div>
-                                    <h2>Quotation</h2>
-                                    <p>This quotation includes GST</p>
-                                </div>
-                                <div>
-                                    <ChevronRightRoundedIcon />
-                                </div>
-                            </div>
-                            <div className="pricing-content">
-                                <div>
-                                    <p>Freight Charges({result.price})</p>
-                                    <span>₹ 0,00,000</span>
-                                </div>
-                                <div>
-                                    <p>Origin Charge</p>
-                                    <span>₹ 00,000</span>
-                                </div>
-                                <div className="pricing-total">
+                        selectedResult && (
+                            <>
+                                <div className="pricing-heading">
                                     <div>
-                                        <span>Total</span>
-                                        <span>₹ 0,00,000</span>
+                                        <h2>Quotation</h2>
+                                        <p>This quotation includes GST</p>
+                                    </div>
+                                    <div>
+                                        <ChevronRightRoundedIcon />
                                     </div>
                                 </div>
-                                <button onClick={toggleDrawer(true)}>View Full Quote</button>
-                            </div>
-                        </>
+                                <div className="pricing-content">
+                                    <div>
+                                        <p>Freight Charges({selectedResult.price})</p>
+                                        <span>₹ 0,00,000</span>
+                                    </div>
+                                    <div>
+                                        <p>Origin Charge</p>
+                                        <span>₹ 00,000</span>
+                                    </div>
+                                    <div className="pricing-total">
+                                        <div>
+                                            <span>Total</span>
+                                            <span>₹ 0,00,000</span>
+                                        </div>
+                                    </div>
+                                    <button onClick={toggleDrawer(true)}>View Full Quote</button>
+                                </div>
+                            </>
+                        )
                     )}
                 </div>
             </div>
@@ -135,13 +138,15 @@ function FullQuotePage() {
                         <Skeleton height={50} width={150} borderRadius={30} baseColor="#ffffff17" highlightColor="#ffffffab" />
                     </>
                 ) : (
-                    <>
-                        <div className="total-price">
-                            <p>₹ 0,00,000</p>
-                            <span>For 1 Container</span>
-                        </div>
-                        <button className="place-order-btn" onClick={handlePlaceOrder}>Place Order</button>
-                    </>
+                    selectedResult && (
+                        <>
+                            <div className="total-price">
+                                <p>₹ 0,00,000</p>
+                                <span>For 1 Container</span>
+                            </div>
+                            <button className="place-order-btn" onClick={handlePlaceOrder}>Place Order</button>
+                        </>
+                    )
                 )}
             </div>
             <Drawer

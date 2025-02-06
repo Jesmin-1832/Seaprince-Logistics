@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../assets/css/toPage.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { LocationContext } from '../context/LocationContext';
 
 function ToPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState("");
+    const { setToLocation } = useContext(LocationContext);
 
     const recentLocations = [
         { name: "Southampton", country: "United Kingdom, England", code: "SA JED" },
@@ -23,16 +25,15 @@ function ToPage() {
     ];
 
     const handleSelect = (toLocation) => {
+        setToLocation(toLocation);
         const state = location.state || {};
         const from = state.from;
         navigate("/", { state: { from, to: toLocation }, replace: true });
-        window.location.reload();
     };
 
     const handleBackClick = () => {
         const state = location.state || {};
         navigate("/", { state, replace: true });
-        window.location.reload();
     };
 
     const filteredRecentLocations = recentLocations.filter(location =>
