@@ -85,56 +85,44 @@ function ResultsPage() {
             </div>
             <div className="results-page-content">
                 <h2>Upcoming Vessels</h2>
-                {loading ? (
-                    <Swiper grabCursor={true}
-                        spaceBetween={10}
-                        breakpoints={{
-                            0: {
-                                slidesPerView: 1.2,
-                            },
-                            320: { slidesPerView: 1.5 },
-                            400: { slidesPerView: 1.8 },
-                            425: { slidesPerView: 2 },
-                            500: { slidesPerView: 2.5 },
-                        }}
-                    >
-                        {Array(3).fill().map((_, index) => (
+                <Swiper grabCursor={true}
+                    spaceBetween={10}
+                    breakpoints={{
+                        0: {
+                            slidesPerView: 1.2,
+                        },
+                        320: { slidesPerView: 1.5 },
+                        400: { slidesPerView: 1.8 },
+                        425: { slidesPerView: 2 },
+                        500: { slidesPerView: 2.5 },
+                    }}
+                >
+                    {loading ? (
+                        Array(3).fill().map((_, index) => (
                             <SwiperSlide key={index}>
                                 <div className="slide-content">
-                                    <Skeleton height={50} />
+                                    <Skeleton height={20} width={150} baseColor="transparent" highlightColor="#ffffffab" />
+                                    <Skeleton height={20} width={100} baseColor="transparent" highlightColor="#ffffffab" />
                                 </div>
                             </SwiperSlide>
-                        ))}
-                    </Swiper>
-                ) : (
-                    <Swiper grabCursor={true}
-                        spaceBetween={10}
-                        breakpoints={{
-                            0: {
-                                slidesPerView: 1.2,
-                            },
-                            320: { slidesPerView: 1.5 },
-                            400: { slidesPerView: 1.8 },
-                            425: { slidesPerView: 2 },
-                            500: { slidesPerView: 2.5 },
-                        }}
-                    >
-                        {slides.map((slide, index) => (
+                        ))
+                    ) : (
+                        slides.map((slide, index) => (
                             <SwiperSlide key={index}>
                                 <div className="slide-content">
                                     <h3>{slide.title}</h3>
                                     <p><span>{slide.date}</span> | <span>{slide.day}</span></p>
                                 </div>
                             </SwiperSlide>
-                        ))}
-                    </Swiper>
-                )}
+                        ))
+                    )}
+                </Swiper>
 
                 <h2>Search Result</h2>
                 {loading ? (
                     Array(4).fill().map((_, index) => (
                         <div className="result_box" key={index}>
-                            <Skeleton height={200}  />
+                            <Skeleton height={200} baseColor="#d3d3d3" highlightColor="#ffffffab" />
                             <br />
                         </div>
                     ))
@@ -167,15 +155,25 @@ function ResultsPage() {
                     ))
                 )}
 
-                <div className="contact_box">
-                    <div>
-                        <img src={require("../assets/image/person.png")} alt="" />
+                {loading ? (
+                    <div className="contact_box">
+                        <Skeleton circle={true} height={50} width={50} baseColor="#d3d3d3" highlightColor="#ffffffab" />
+                        <div style={{ marginLeft: '20px' }}>
+                            <Skeleton height={20} width={200} baseColor="#d3d3d3" highlightColor="#ffffffab" />
+                            <Skeleton height={20} width={150} style={{ marginTop: '5px' }} baseColor="#d3d3d3" highlightColor="#ffffffab" />
+                        </div>
                     </div>
-                    <div>
-                        <p>Need Help? Talk to our price consultant</p>
-                        <a href="tel:+0123456789">Faisal Shaik <CallSharpIcon /></a>
+                ) : (
+                    <div className="contact_box">
+                        <div>
+                            <img src={require("../assets/image/person.png")} alt="" />
+                        </div>
+                        <div>
+                            <p>Need Help? Talk to our price consultant</p>
+                            <a href="tel:+0123456789">Faisal Shaik <CallSharpIcon /></a>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

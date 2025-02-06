@@ -6,6 +6,8 @@ import FromPage from "./FromPage";
 import ToPage from "./ToPage";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function HomePage() {
     const [tabValue, setTabValue] = useState(0);
@@ -15,16 +17,20 @@ function HomePage() {
     const [showFromPage, setShowFromPage] = useState(false);
     const [showToPage, setShowToPage] = useState(false);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const location = useLocation();
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const state = location.state || {};
         const from = state.from;
         const to = state.to;
         if (from) setFromLocation(from);
         if (to) setToLocation(to);
+
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
     }, [location]);
 
     const handleTabChange = (newValue) => {
@@ -80,79 +86,93 @@ function HomePage() {
             <div className="home_content">
                 <div className="container">
                     {/* Custom Tabs Section */}
-                    <div className="home_tabs">
-                        <div className="tab-buttons">
-                            <button
-                                className={`tab-btn ${tabValue === 0 ? "active" : ""}`}
-                                onClick={() => handleTabChange(0)}
-                            >
-                                End To End
-                            </button>
-                            <button
-                                className={`tab-btn ${tabValue === 1 ? "active" : ""}`}
-                                onClick={() => handleTabChange(1)}
-                            >
-                                Port To Port
-                            </button>
-                            <div className="tab-indicator" style={{ transform: `translateX(${tabValue * 100}%)` }} />
+                    {loading ? (
+                        <div className="home_tabs">
+                            <Skeleton height={40} baseColor="transparent" highlightColor="#ffffffab" />
                         </div>
-                    </div>
-                    {/* Form Section */}
-                    {tabValue === 0 && (
-                        <div className={`home_form ${animationClass}`}>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <div className="form-box">
-                                        <div className="form-section" onClick={handleFromClick}>
-                                            <h2>From</h2>
-                                            <p>{fromLocation}</p>
-                                            <span>IN NSA</span>
-                                        </div>
-                                        <div className="form-section" onClick={handleToClick}>
-                                            <h2>To</h2>
-                                            <p>{toLocation}</p>
-                                            <span>GB SOU</span>
-                                        </div>
-                                    </div>
-                                </Grid>
-                                {error && (
-                                        <p className="error-message">{error}</p>
-                                )}
-                                <Grid item xs={12}>
-                                    <Button variant="contained" color="primary" fullWidth onClick={handleSearch}>
-                                        Search
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                    ) : (
+                        <div className="home_tabs">
+                            <div className="tab-buttons">
+                                <button
+                                    className={`tab-btn ${tabValue === 0 ? "active" : ""}`}
+                                    onClick={() => handleTabChange(0)}
+                                >
+                                    End To End
+                                </button>
+                                <button
+                                    className={`tab-btn ${tabValue === 1 ? "active" : ""}`}
+                                    onClick={() => handleTabChange(1)}
+                                >
+                                    Port To Port
+                                </button>
+                                <div className="tab-indicator" style={{ transform: `translateX(${tabValue * 100}%)` }} />
+                            </div>
                         </div>
                     )}
-                    {tabValue === 1 && (
-                             <div className={`home_form ${animationClass}`}>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <div className="form-box">
-                                        <div className="form-section" onClick={handleFromClick}>
-                                            <h2>From</h2>
-                                            <p>{fromLocation}</p>
-                                            <span>IN NSA</span>
-                                        </div>
-                                        <div className="form-section" onClick={handleToClick}>
-                                            <h2>To</h2>
-                                            <p>{toLocation}</p>
-                                            <span>GB SOU</span>
-                                        </div>
-                                    </div>
-                                </Grid>
-                                {error && (
-                                        <p className="error-message">{error}</p>
-                                )}
-                                <Grid item xs={12}>
-                                    <Button variant="contained" color="primary" fullWidth onClick={handleSearch}>
-                                        Search
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                    {/* Form Section */}
+                    {loading ? (
+                        <div className="home_form">
+                            <Skeleton height={130} baseColor="#d3d3d3" highlightColor="#ffffffab" />
                         </div>
+                    ) : (
+                        <>
+                            {tabValue === 0 && (
+                                <div className={`home_form ${animationClass}`}>
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={12}>
+                                            <div className="form-box">
+                                                <div className="form-section" onClick={handleFromClick}>
+                                                    <h2>From</h2>
+                                                    <p>{fromLocation}</p>
+                                                    <span>IN NSA</span>
+                                                </div>
+                                                <div className="form-section" onClick={handleToClick}>
+                                                    <h2>To</h2>
+                                                    <p>{toLocation}</p>
+                                                    <span>GB SOU</span>
+                                                </div>
+                                            </div>
+                                        </Grid>
+                                        {error && (
+                                            <p className="error-message">{error}</p>
+                                        )}
+                                        <Grid item xs={12}>
+                                            <Button variant="contained" color="primary" fullWidth onClick={handleSearch}>
+                                                Search
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            )}
+                            {tabValue === 1 && (
+                                <div className={`home_form ${animationClass}`}>
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={12}>
+                                            <div className="form-box">
+                                                <div className="form-section" onClick={handleFromClick}>
+                                                    <h2>From</h2>
+                                                    <p>{fromLocation}</p>
+                                                    <span>IN NSA</span>
+                                                </div>
+                                                <div className="form-section" onClick={handleToClick}>
+                                                    <h2>To</h2>
+                                                    <p>{toLocation}</p>
+                                                    <span>GB SOU</span>
+                                                </div>
+                                            </div>
+                                        </Grid>
+                                        {error && (
+                                            <p className="error-message">{error}</p>
+                                        )}
+                                        <Grid item xs={12}>
+                                            <Button variant="contained" color="primary" fullWidth onClick={handleSearch}>
+                                                Search
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            )}
+                        </>
                     )}
                     {showFromPage && (
                         <div className="overlay">
@@ -172,51 +192,75 @@ function HomePage() {
             </div>
             <div className="home_carousel">
                 <div className="container">
-                    <Swiper 
-                    grabCursor={true}
-                    freeMode={true}
-                    breakpoints={{
-                        0: { 
-                            slidesPerView: 1.2,
-                         },
-                        320: { slidesPerView: 1.5 },
-                        400: { slidesPerView: 1.8 },
-                        425: { slidesPerView: 2 },
-                        500: { slidesPerView: 2.2 },
-                    }}
-                    speed={800} >
-                        {swiperItems.map(item => (
-                            <SwiperSlide key={item.id}>
-                                {item.isFirst ? (
-                                    <div className="swiper-item-content">
-                                        <p>{item.heading}</p>
-                                    </div>
-                                ) : (
-                                    <div className="swiper-item">
-                                        <img src={item.image} alt={item.heading} />
-                                        <h2>{item.heading}</h2>
-                                        <p>{item.description}</p>
-                                    </div>
-                                )}
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
+                    {loading ? (
+                        <Skeleton height={250} baseColor="#d3d3d3" highlightColor="#ffffffab" />
+                    ) : (
+                        <Swiper
+                            grabCursor={true}
+                            freeMode={true}
+                            breakpoints={{
+                                0: {
+                                    slidesPerView: 1.2,
+                                },
+                                320: { slidesPerView: 1.5 },
+                                400: { slidesPerView: 1.8 },
+                                425: { slidesPerView: 2 },
+                                500: { slidesPerView: 2.2 },
+                            }}
+                            speed={800}
+                        >
+                            {swiperItems.map(item => (
+                                <SwiperSlide key={item.id}>
+                                    {item.isFirst ? (
+                                        <div className="swiper-item-content">
+                                            <p>{item.heading}</p>
+                                        </div>
+                                    ) : (
+                                        <div className="swiper-item">
+                                            <img src={item.image} alt={item.heading} />
+                                            <h2>{item.heading}</h2>
+                                            <p>{item.description}</p>
+                                        </div>
+                                    )}
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    )}
                 </div>
             </div>
             <div className="home-img-sec">
                 <div className="container">
-                    <h2>Heading</h2>
-                    <div className="content-wrapper">
-                        <div className="text-content">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                                condimentum tortor sem.
-                            </p>
-                        </div>
-                        <div className="image-content">
-                            <img src={require("../assets/image/person.png")} alt="" />
-                        </div>
-                    </div>
+                    {loading ? (
+                        <>
+                            <div className="content-wrapper">
+                                <div className="text-content">
+                                    <Skeleton height={20} width={150} baseColor="transparent" highlightColor="#ffffffab" />
+                                    <Skeleton height={20} width={130} baseColor="transparent" highlightColor="#ffffffab" />
+                                    <Skeleton height={20} width={140} baseColor="transparent" highlightColor="#ffffffab" />
+                                    <Skeleton height={20} width={100} baseColor="transparent" highlightColor="#ffffffab" />
+
+                                </div>
+                                <div className="image-content">
+                                    <Skeleton borderRadius={20} height={150} width={150} baseColor="transparent" highlightColor="#ffffffab" />
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <h2>Heading</h2>
+                            <div className="content-wrapper">
+                                <div className="text-content">
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                                        condimentum tortor sem.
+                                    </p>
+                                </div>
+                                <div className="image-content">
+                                    <img src={require("../assets/image/person.png")} alt="" />
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
