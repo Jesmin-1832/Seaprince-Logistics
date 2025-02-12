@@ -8,7 +8,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import "../assets/css/resultsPage.css";
 import { LocationContext } from '../context/LocationContext';
-
+ 
 function ResultsPage() {
     const navigate = useNavigate();
     const location = useLocation();
