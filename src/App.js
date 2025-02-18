@@ -31,7 +31,7 @@ function AppContent() {
   const location = useLocation();
 
   useEffect(() => {
-    switch (location.pathname) {
+    switch (location.pathname) {  
       case "/":
         setNavValue(0);
         break;

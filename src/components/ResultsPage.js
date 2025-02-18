@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"; 
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CallSharpIcon from '@mui/icons-material/CallSharp';
@@ -8,7 +8,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import "../assets/css/resultsPage.css";
 import { LocationContext } from '../context/LocationContext';
- 
+
 function ResultsPage() {
     const navigate = useNavigate();
     const location = useLocation();
