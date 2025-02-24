@@ -7,7 +7,7 @@ import ToPage from './components/ToPage';
 import ResultsPage from './components/ResultsPage';
 import FullQuotePage from './components/FullQuotePage';
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded'; 
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded';
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
 import React, { useState, useEffect } from 'react';
