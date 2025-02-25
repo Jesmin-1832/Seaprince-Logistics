@@ -1,34 +1,70 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../assets/css/toPage.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { LocationContext } from '../context/LocationContext';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import { LocationContext } from "../context/LocationContext";
+import { fetchPorts } from "../api/ports";
 
 function ToPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState("");
     const { setToLocation } = useContext(LocationContext);
+    const [ports, setPorts] = useState([]);
+    const [recentSearches, setRecentSearches] = useState([]);
+    const [error, setError] = useState("");
+    const [availablePorts, setAvailablePorts] = useState([]);
 
-    const recentLocations = [
-        { name: "Southampton", country: "United Kingdom, England", code: "SA JED" },
-        { name: "New York", country: "United States, New York", code: "NYC" },
-        { name: "London", country: "United Kingdom, England", code: "LON" },
-    ];
+    useEffect(() => {
+        const getPorts = async () => {
+            const { to } = await fetchPorts();
+            if (to.length === 0) {
+                setError("No ports found.");
+            } else {
+                setError("");
+            }
+            setPorts(to);
+        };
+        getPorts();
 
-    const popularLocations = [
-        { name: "Los Angeles", country: "United States, California", code: "LAX" },
-        { name: "San Francisco", country: "United States, California", code: "SFO" },
-        { name: "Chicago", country: "United States, Illinois", code: "ORD" },
-        { name: "Miami", country: "United States, Florida", code: "MIA" },
-    ];
+        // Retrieve recent searches from localStorage
+        const storedSearches = JSON.parse(localStorage.getItem("recentToSearches")) || [];
+        if (storedSearches.length > 0) {
+            setRecentSearches(storedSearches);
+        }
 
-    const handleSelect = (toLocation) => {
-        setToLocation(toLocation);
+        // Fetch available ports from the search API
+        const fetchAvailablePorts = async () => {
+            try {
+                const response = await fetch('https://app.seaprince.click4demos.co.in/api/search');
+                const data = await response.json();
+                const availableToPorts = data.map(item => item.to);
+                setAvailablePorts(availableToPorts);
+            } catch (error) {
+                console.error('Error fetching available ports:', error);
+            }
+        };
+        fetchAvailablePorts();
+    }, []);
+
+    const handleSelect = (selectedPort) => {
+        setToLocation({ name: selectedPort.portname, code: selectedPort.code });
+
+        // Update recent searches (ensure unique entries & limit to 4)
+        let updatedSearches = [
+            selectedPort,
+            ...recentSearches.filter(item => item.code !== selectedPort.code)
+        ];
+        if (updatedSearches.length > 4) {
+            updatedSearches = updatedSearches.slice(0, 4);
+        }
+        setRecentSearches(updatedSearches);
+        localStorage.setItem("recentToSearches", JSON.stringify(updatedSearches));
+
         const state = location.state || {};
         const from = state.from;
-        navigate("/", { state: { from, to: toLocation }, replace: true });
+        navigate("/", { state: { from, toName: selectedPort.portname, toCode: selectedPort.code }, replace: true });
     };
 
     const handleBackClick = () => {
@@ -36,13 +72,11 @@ function ToPage() {
         navigate("/", { state, replace: true });
     };
 
-    const filteredRecentLocations = recentLocations.filter(location =>
-        location.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredPorts = ports.filter(port =>
+        port.portname && port.portname.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filteredPopularLocations = popularLocations.filter(location =>
-        location.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const isPortAvailable = (portCode) => availablePorts.includes(portCode);
 
     return (
         <div className="to-page">
@@ -62,40 +96,47 @@ function ToPage() {
                     />
                     <SearchRoundedIcon />
                 </div>
-             
-                <h2>Recent Search</h2>
-                <div className="to-page-inner">
-                    {filteredRecentLocations.length > 0 ? (
-                        <ul>
-                            {filteredRecentLocations.map((location) => (
-                                <li key={location.code} onClick={() => handleSelect(location.name)}>
-                                    <div>
-                                        <h2>{location.name}</h2>
-                                        <p>{location.country}</p>
-                                    </div>
-                                    <div>
-                                        <span>{location.code}</span>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p className="noDataFound">POD Not Found</p>
-                    )}
-                </div>
-                
+
+                {/* Show Recent Search only when there is data */}
+                {recentSearches.length > 0 && (
+                    <>
+                        <h2>Recent Search</h2>
+                        <div className="to-page-inner">
+                            <ul>
+                                {recentSearches.map((port, index) => (
+                                    <li key={index} onClick={() => handleSelect(port)}>
+                                        <div>
+                                            <h2>{port.portname}</h2>
+                                            <p>{port.country_name}</p>
+                                        </div>
+                                        <div style={{ textAlign: "end" }}>
+                                            <span>{port.code}</span>
+                                            <p style={{ color: isPortAvailable(port.code) ? 'green' : 'red' }}>
+                                                {isPortAvailable(port.code) ? "Available" : "N/A"}
+                                            </p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </>
+                )}
+
                 <h2>Popular Search</h2>
                 <div className="to-page-inner">
-                    {filteredPopularLocations.length > 0 ? (
+                    {filteredPorts.length > 0 ? (
                         <ul>
-                            {filteredPopularLocations.map((location) => (
-                                <li key={location.code} onClick={() => handleSelect(location.name)}>
+                            {filteredPorts.map((port) => (
+                                <li key={port.code} onClick={() => handleSelect(port)}>
                                     <div>
-                                        <h2>{location.name}</h2>
-                                        <p>{location.country}</p>
+                                        <h2>{port.portname}</h2>
+                                        <p>{port.country_name}</p>
                                     </div>
-                                    <div>
-                                        <span>{location.code}</span>
+                                    <div style={{ textAlign: "end" }}>
+                                        <span>{port.code}</span>
+                                        <p style={{ color: isPortAvailable(port.code) ? 'green' : 'red' }}>
+                                            {isPortAvailable(port.code) ? "Available" : "N/A"}
+                                        </p>
                                     </div>
                                 </li>
                             ))}
@@ -110,3 +151,6 @@ function ToPage() {
 }
 
 export default ToPage;
+
+
+

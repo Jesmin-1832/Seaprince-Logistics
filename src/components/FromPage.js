@@ -1,34 +1,70 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../assets/css/fromPage.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { LocationContext } from '../context/LocationContext';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import { LocationContext } from "../context/LocationContext";
+import { fetchPorts } from "../api/ports";
 
 function FromPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState("");
     const { setFromLocation } = useContext(LocationContext);
+    const [ports, setPorts] = useState([]);
+    const [recentSearches, setRecentSearches] = useState([]);
+    const [error, setError] = useState("");
+    const [availablePorts, setAvailablePorts] = useState([]);
 
-    const recentLocations = [
-        { name: "Nhava Sheva", country: "India, Maharashtra", code: "IN NSA" },
-        { name: "Mumbai", country: "India, Maharashtra", code: "IN BOM" },
-        { name: "Pune", country: "India, Maharashtra", code: "IN PNQ" },
-    ];
+    useEffect(() => {
+        const getPorts = async () => {
+            const { from } = await fetchPorts();
+            if (from.length === 0) {
+                setError("No ports found.");
+            } else {
+                setError("");
+            }
+            setPorts(from);
+        };
+        getPorts();
 
-    const popularLocations = [
-        { name: "Chennai", country: "India, Tamil Nadu", code: "IN MAA" },
-        { name: "Kolkata", country: "India, West Bengal", code: "IN CCU" },
-        { name: "Delhi", country: "India, Delhi", code: "IN DEL" },
-        { name: "Bangalore", country: "India, Karnataka", code: "IN BLR" },
-    ];
+        // Retrieve recent searches from localStorage
+        const storedSearches = JSON.parse(localStorage.getItem("recentSearches")) || [];
+        if (storedSearches.length > 0) {
+            setRecentSearches(storedSearches);
+        }
 
-    const handleSelect = (fromLocation) => {
-        setFromLocation(fromLocation);
+        // Fetch available ports from the search API
+        const fetchAvailablePorts = async () => {
+            try {
+                const response = await fetch('https://app.seaprince.click4demos.co.in/api/search');
+                const data = await response.json();
+                const availableFromPorts = data.map(item => item.from);
+                setAvailablePorts(availableFromPorts);
+            } catch (error) {
+                console.error('Error fetching available ports:', error);
+            }
+        };
+        fetchAvailablePorts();
+    }, []);
+
+    const handleSelect = (selectedPort) => {
+        setFromLocation({ name: selectedPort.portname, code: selectedPort.code });
+
+        // Update recent searches (ensure unique entries & limit to 4)
+        let updatedSearches = [
+            selectedPort,
+            ...recentSearches.filter(item => item.code !== selectedPort.code)
+        ];
+        if (updatedSearches.length > 4) {
+            updatedSearches = updatedSearches.slice(0, 4);
+        }
+        setRecentSearches(updatedSearches);
+        localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
+
         const state = location.state || {};
         const to = state.to;
-        navigate("/", { state: { from: fromLocation, to }, replace: true });
+        navigate("/", { state: { from: selectedPort.portname, to }, replace: true });
     };
 
     const handleBackClick = () => {
@@ -36,13 +72,11 @@ function FromPage() {
         navigate("/", { state, replace: true });
     };
 
-    const filteredRecentLocations = recentLocations.filter(location =>
-        location.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredPorts = ports.filter(port =>
+        port.portname && port.portname.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filteredPopularLocations = popularLocations.filter(location =>
-        location.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const isPortAvailable = (portCode) => availablePorts.includes(portCode);
 
     return (
         <div className="from-page">
@@ -62,40 +96,47 @@ function FromPage() {
                     />
                     <SearchRoundedIcon />
                 </div>
-             
-                <h2>Recent Search</h2>
-                <div className="from-page-inner">
-                    {filteredRecentLocations.length > 0 ? (
-                        <ul>
-                            {filteredRecentLocations.map((location) => (
-                                <li key={location.code} onClick={() => handleSelect(location.name)}>
-                                    <div>
-                                        <h2>{location.name}</h2>
-                                        <p>{location.country}</p>
-                                    </div>
-                                    <div>
-                                        <span>{location.code}</span>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p className="noDataFound">POL Not Found</p>
-                    )}
-                </div>
-                
+
+                {/* Show Recent Search only when there is data */}
+                {recentSearches.length > 0 && (
+                    <>
+                        <h2>Recent Search</h2>
+                        <div className="from-page-inner">
+                            <ul>
+                                {recentSearches.map((port, index) => (
+                                    <li key={index} onClick={() => handleSelect(port)}>
+                                        <div>
+                                            <h2>{port.portname}</h2>
+                                            <p>India</p>
+                                        </div>
+                                        <div style={{ textAlign: "end" }}>
+                                            <span>{port.code}</span>
+                                            <p style={{ color: isPortAvailable(port.code) ? 'green' : 'red' }}>
+                                                {isPortAvailable(port.code) ? "Available" : "N/A"}
+                                            </p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </>
+                )}
+
                 <h2>Popular Search</h2>
                 <div className="from-page-inner">
-                    {filteredPopularLocations.length > 0 ? (
+                    {filteredPorts.length > 0 ? (
                         <ul>
-                            {filteredPopularLocations.map((location) => (
-                                <li key={location.code} onClick={() => handleSelect(location.name)}>
+                            {filteredPorts.map((port) => (
+                                <li key={port.code} onClick={() => handleSelect(port)}>
                                     <div>
-                                        <h2>{location.name}</h2>
-                                        <p>{location.country}</p>
+                                        <h2>{port.portname}</h2>
+                                        <p>India</p>
                                     </div>
-                                    <div>
-                                        <span>{location.code}</span>
+                                    <div style={{ textAlign: "end" }}>
+                                        <span>{port.code}</span>
+                                        <p style={{ color: isPortAvailable(port.code) ? 'green' : 'red' }}>
+                                            {isPortAvailable(port.code) ? "Available" : "N/A"}
+                                        </p>
                                     </div>
                                 </li>
                             ))}
@@ -110,3 +151,6 @@ function FromPage() {
 }
 
 export default FromPage;
+
+
+
