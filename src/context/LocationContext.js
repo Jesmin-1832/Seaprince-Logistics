@@ -3,10 +3,20 @@ import React, { createContext, useState, useEffect } from 'react';
 export const LocationContext = createContext();
 
 export const LocationProvider = ({ children }) => {
-    const [fromLocation, setFromLocation] = useState(() => localStorage.getItem('fromLocation') || "Select From");
-    const [toLocation, setToLocation] = useState(() => localStorage.getItem('toLocation') || "Select To");
-    const [results, setResults] = useState(() => JSON.parse(localStorage.getItem('results')) || []);
-    const [selectedResult, setSelectedResult] = useState(() => JSON.parse(localStorage.getItem('selectedResult')) || null);
+    const getInitialState = (key, defaultValue) => {
+        try {
+            const storedValue = localStorage.getItem(key);
+            return storedValue ? JSON.parse(storedValue) : defaultValue;
+        } catch (error) {
+            console.error(`Error parsing ${key} from localStorage`, error);
+            return defaultValue;
+        }
+    };
+
+    const [fromLocation, setFromLocation] = useState(() => getInitialState('fromLocation', { name: "Select From", code: "" }));
+    const [toLocation, setToLocation] = useState(() => getInitialState('toLocation', { name: "Select To", code: "" }));
+    const [results, setResults] = useState(() => getInitialState('results', []));
+    const [selectedResult, setSelectedResult] = useState(() => getInitialState('selectedResult', null));
     const [recentLocations, setRecentLocations] = useState([
         { name: "Nhava Sheva", country: "India, Maharashtra", code: "IN NSA" },
         { name: "Mumbai", country: "India, Maharashtra", code: "IN BOM" },
@@ -20,11 +30,11 @@ export const LocationProvider = ({ children }) => {
     ]);
 
     useEffect(() => {
-        localStorage.setItem('fromLocation', fromLocation);
+        localStorage.setItem('fromLocation', JSON.stringify(fromLocation));
     }, [fromLocation]);
 
     useEffect(() => {
-        localStorage.setItem('toLocation', toLocation);
+        localStorage.setItem('toLocation', JSON.stringify(toLocation));
     }, [toLocation]);
 
     useEffect(() => {
@@ -48,3 +58,5 @@ export const LocationProvider = ({ children }) => {
         </LocationContext.Provider>
     );
 };
+
+

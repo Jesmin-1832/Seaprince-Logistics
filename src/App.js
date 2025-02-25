@@ -6,8 +6,10 @@ import FromPage from './components/FromPage';
 import ToPage from './components/ToPage';
 import ResultsPage from './components/ResultsPage';
 import FullQuotePage from './components/FullQuotePage';
-import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material"; 
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded'; 
+import LoginPage from './components/LoginPage';
+import RegisterPage from './components/RegisterPage';
+import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded';
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
 import React, { useState, useEffect } from 'react';
@@ -63,7 +65,7 @@ function AppContent() {
     }
   };
 
-  const hideHeaderPaths = ["/from", "/to", "/results", "/full-quote"];
+  const hideHeaderPaths = ["/from", "/to", "/results", "/full-quote", "/login", "/register"];
   const hideBottomNavPaths = ["/full-quote"];
 
   return (
@@ -78,6 +80,8 @@ function AppContent() {
           <Route path="/to" element={<ToPage />} />
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/full-quote" element={<FullQuotePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
         {!hideBottomNavPaths.includes(location.pathname) && (
           <BottomNav navValue={navValue} handleNavigationChange={handleNavigationChange} />

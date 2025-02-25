@@ -7,8 +7,8 @@ function Header() {
                 <ul>
                     <li>
                         <a href=" ">
-                            {/* <img src={require("./assets/image/Seaprince-white.png")} alt="Logo" /> */}
-                            LOGO
+                            <img src={require("./assets/image/Seaprince-white.png")} alt="Logo" />
+                            {/* LOGO */}
                         </a>
                     </li>
                     <li>

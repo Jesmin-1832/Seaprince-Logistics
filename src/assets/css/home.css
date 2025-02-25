@@ -131,7 +131,6 @@
 .home-page .home_content .form-box {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     border: 1px solid darkgray;
     padding: 20px;
     border-radius: 10px;

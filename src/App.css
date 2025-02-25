@@ -25,7 +25,14 @@ body {
   color: var(--white-color);
 }
 ::-webkit-scrollbar{
-  display: none;
+  width: 5px;
+  background-color: transparent;
+  z-index: 999;
+}
+::-webkit-scrollbar-thumb{
+  background-color: #111741;
+  border-radius: 5px;
+  cursor: pointer;
 }
 .main {
   position: relative;

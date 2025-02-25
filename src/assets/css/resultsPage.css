@@ -87,7 +87,7 @@
 .results-page .result_box_inner {
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 18px 15px;
     margin-top: 20px;
     background-color: var(--white-color);
     border-radius: 10px;
@@ -99,7 +99,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
-    gap: 20px;
+    gap: 15px;
     border-bottom: 2px solid #ccc;
     padding-bottom: 10px;
 }
@@ -120,7 +120,7 @@
 .results-page .result_box_inner_content p span {
     display: inline-block;
     margin: 0 10px;
-    width: 80px;
+    width: 60px;
     height: 10px;
     background-color: grey;
     clip-path: polygon(0 45%, 90% 45%, 90% 0, 100% 50%, 90% 100%, 90% 55%, 0 55%);
@@ -129,7 +129,6 @@
     color: var(--btn-hover-color);
     font-size: 14px;
     font-weight: 400;
-    text-align: center;
 }
 .results-page .result_box_inner h3 {
     font-size: 16px;
