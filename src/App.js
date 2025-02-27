@@ -1,3 +1,4 @@
+
 import './App.css';
 import HomePage from './components/HomePage';
 import ServicesPage from './components/ServicesPage';
@@ -8,45 +9,41 @@ import ResultsPage from './components/ResultsPage';
 import FullQuotePage from './components/FullQuotePage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import React, { useState } from 'react';
+import Header from './Header';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { LocationProvider } from './context/LocationContext';
+import NotFoundPage from './components/NotFoundPage';
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded';
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
-import React, { useState, useEffect } from 'react';
-import Header from './Header';
-import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { LocationProvider } from './context/LocationContext';
+import { AuthProvider } from '@webbydevs/react-laravel-sanctum-auth';
+import config from './api/config';
 
 function App() {
   return (
-    <Router>
-      <LocationProvider>
-        <AppContent />
-      </LocationProvider>
-    </Router>
+    // <AuthProvider
+    //   config={{
+    //     apiUrl: config.apiUrl,
+    //     csrfCookieRoute: 'csrf-token',
+    //     signInRoute: 'api/login',
+    //     signUpRoute: 'api/lsignup',
+    //     withCredentials: true,
+    //   }}>
+      <Router>
+        <LocationProvider>
+          <AppContent />
+        </LocationProvider>
+      </Router>
+    // </AuthProvider>
   );
 }
 
 function AppContent() {
   const [navValue, setNavValue] = useState(0);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  useEffect(() => {
-    switch (location.pathname) {  
-      case "/":
-        setNavValue(0);
-        break;
-      case "/services":
-        setNavValue(1);
-        break;
-      case "/schedule":
-        setNavValue(2);
-        break;
-      default:
-        break;
-    }
-  }, [location.pathname]);
 
   const handleNavigationChange = (event, newValue) => {
     setNavValue(newValue);
@@ -65,14 +62,14 @@ function AppContent() {
     }
   };
 
-  const hideHeaderPaths = ["/from", "/to", "/results", "/full-quote", "/login", "/register"];
-  const hideBottomNavPaths = ["/full-quote"];
-
   return (
     <div className="App">
       <div className='main'>
-        {!hideHeaderPaths.includes(location.pathname) && <Header />}
+        {/* <Header /> */}
+        
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<RegisterPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/schedule" element={<SchedulePage />} />
@@ -80,30 +77,24 @@ function AppContent() {
           <Route path="/to" element={<ToPage />} />
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/full-quote" element={<FullQuotePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
-        {!hideBottomNavPaths.includes(location.pathname) && (
-          <BottomNav navValue={navValue} handleNavigationChange={handleNavigationChange} />
-        )}
+
+
+        {/* <Paper elevation={3}>
+          <BottomNavigation
+            className='bottomNavigation'
+            showLabels
+            value={navValue}
+            onChange={handleNavigationChange}
+          >
+            <BottomNavigationAction label="Home" icon={<HomeRoundedIcon />} />
+            <BottomNavigationAction label="Services" icon={<DashboardCustomizeRoundedIcon />} />
+            <BottomNavigationAction label="Schedule" icon={<EditCalendarRoundedIcon />} />
+          </BottomNavigation>
+        </Paper> */}
       </div>
     </div>
-  );
-}
-
-function BottomNav({ navValue, handleNavigationChange }) {
-  return (
-    <Paper sx={{ position: "fixed", bottom: 0, left: 0, right: 0, maxWidth: "575px", margin: "0 auto" }} elevation={3}>
-      <BottomNavigation
-        showLabels
-        value={navValue}
-        onChange={handleNavigationChange}
-      >
-        <BottomNavigationAction label="Home" icon={<HomeRoundedIcon />} />
-        <BottomNavigationAction label="Services" icon={<DashboardCustomizeRoundedIcon />} />
-        <BottomNavigationAction label="Schedule" icon={<EditCalendarRoundedIcon />} />
-      </BottomNavigation>
-    </Paper>
   );
 }
 

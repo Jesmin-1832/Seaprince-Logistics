@@ -1,0 +1,108 @@
+.login-page {
+    height: 100%;
+    margin: 0 auto;
+    background: url("../image/login_bg.jpg") ,  linear-gradient(var(--primary-color), var(--secondary-color));
+    background-blend-mode: multiply;
+    background-repeat: repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+}
+
+.login-page .login-background{
+    height: 40%;
+}
+.login-page .login-background img{ 
+    width: 100%;
+    height: 90%;
+    padding: 30px;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+.login-page .login-form {
+    height: max-content;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 50px 20px;
+    border-radius: 30px 30px 0 0;
+    box-shadow: 0 0px 20px 0 rgba(0, 0, 0, 0.5);
+}
+
+.login-page .form-group {
+    margin-bottom: 30px;
+    text-align: start;
+}
+
+.login-page .form-group label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.login-page .form-group .form-input  {
+    position: relative;
+}
+.login-page .form-group .form-input input {
+    width: 100%;
+    padding: 15px 40px;
+    font-size: 16px;
+    color: white;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.4s all;
+}
+.login-page .form-group .form-input input:focus {
+    box-shadow: 0 0 5px 0 white;
+}
+.login-page .form-group .form-input svg {
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+}
+.login-page .form-group .form-input .form-icon-inner svg {
+    left: auto;
+    right: 10px;
+    cursor: pointer;
+}
+
+.login-page .submit-button {
+    width: 100%;
+    max-width: 300px;
+    font-size: 18px;
+    padding: 10px 25px;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.4s all;
+}
+.login-page .submit-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+.login-page .login-form p {
+    margin: 20px;
+    user-select: none;
+}
+.login-page .login-form p a{
+    color: white;
+    font-weight: bold;
+}
+
+.login-page .error-message {
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+    margin: 0 auto;
+    display: inline-block;
+    margin-bottom: 20px;
+    background: white;
+    width: max-content;
+    padding: 0 5px;
+} 

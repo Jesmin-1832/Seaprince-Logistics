@@ -1,156 +1,3 @@
-
-
-
-// import React, { useState, useEffect } from "react";
-// import { useNavigate, useLocation } from "react-router-dom";
-// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-// import Drawer from '@mui/material/Drawer';
-// import CloseIcon from '@mui/icons-material/Close';
-// import Skeleton from 'react-loading-skeleton';
-// import 'react-loading-skeleton/dist/skeleton.css';
-// import "../assets/css/fullQuotePage.css";
-
-// function FullQuotePage() {
-//     const navigate = useNavigate();
-//     const location = useLocation();
-//     const { fromName, toName, selectedResult } = location.state || {};
-//     const [drawerOpen, setDrawerOpen] = useState(false);
-//     const [tabValue, setTabValue] = useState(0);
-//     const [loading, setLoading] = useState(true);
-//     const [quoteData, setQuoteData] = useState(null);
-
-//     useEffect(() => {
-//         const fetchQuoteData = async () => {
-//             try {
-//                 const response = await fetch(`https://app.seaprince.click4demos.co.in/api/quote?id=${selectedResult.id}`);
-//                 if (!response.ok) throw new Error(`Error: ${response.status}`);
-//                 const data = await response.json();
-//                 setQuoteData(data);
-//             } catch (error) {
-//                 console.error('Error fetching quote data:', error);
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-
-//         if (selectedResult && selectedResult.id) {
-//             fetchQuoteData();
-//         }
-//     }, [selectedResult]);
-
-//     const handleBackClick = () => navigate(-1);
-//     const handlePlaceOrder = () => alert("Order placed successfully!");
-//     const toggleDrawer = (open) => () => setDrawerOpen(open);
-//     const handleTabChange = (newValue) => setTabValue(newValue);
-
-//     return (
-//         <div className="full-quote-page">
-//             <div className="full-quote-page-header">
-//                 <ArrowBackIcon onClick={handleBackClick} />
-//                 <h2>{fromName} To {toName}</h2>
-//             </div>
-//             <div className="full-quote-page-content">
-//                 {loading ? (
-//                     <Skeleton height={30} width={200} />
-//                 ) : (
-//                     <div className="full-quote-heading">
-//                         <h3>Vessel Details</h3>
-//                         <button>Vessel Schedule</button>
-//                     </div>
-//                 )}
-//                 {loading ? (
-//                     <Skeleton height={100} width={300} />
-//                 ) : (
-//                     quoteData && (
-//                         <div className="quote-details">
-//                             <img src={quoteData.vessel.carrier_image} alt="" />
-//                             <div className="quote-details-content">
-//                                 <h2>{quoteData.vessel.shipname}</h2>
-//                                 <p>Carrier: {quoteData.vessel.carrier}</p>
-//                                 <div className="quote-content-inner">
-//                                     <p>{new Date(quoteData.vessel.departure).toLocaleDateString()} <span>ETD</span></p>
-//                                     <p>{new Date(quoteData.vessel.arrival).toLocaleDateString()} <span>ETA</span></p>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                     )
-//                 )}
-//                 <div className="full-quote-pricing">
-//                     {loading ? (
-//                         <Skeleton height={300} />
-//                     ) : (
-//                         quoteData && (
-//                             <>
-//                                 <div className="pricing-heading">
-//                                     <h2>Quotation</h2>
-//                                     <ChevronRightRoundedIcon />
-//                                 </div>
-//                                 <div className="pricing-content">
-//                                     <div><p>Freight Charges</p><span>₹ {quoteData.vessel.freight_charges}</span></div>
-//                                     <div><p>Origin Charge</p><span>₹ {quoteData.vessel.bl_fee}</span></div>
-//                                     <div className="pricing-total">
-//                                         <span>Total</span><span>₹ {quoteData.total_charges}</span>
-//                                     </div>
-//                                     <button onClick={toggleDrawer(true)}>View Full Quote</button>
-//                                 </div>
-//                             </>
-//                         )
-//                     )}
-//                 </div>
-//             </div>
-//             <div className="fixed-bottom">
-//                 {loading ? (
-//                     <Skeleton height={50} width={150} />
-//                 ) : (
-//                     quoteData && (
-//                         <>
-//                             <div className="total-price">
-//                                 <p>₹ {quoteData.total}</p>
-//                                 <span>For 1 Container</span>
-//                             </div>
-//                             <button className="place-order-btn" onClick={handlePlaceOrder}>Place Order</button>
-//                         </>
-//                     )
-//                 )}
-//             </div>
-//             <Drawer anchor="bottom" open={drawerOpen} onClose={toggleDrawer(false)}>
-//                 <div className="drawer-content">
-//                     <div className="drawer-header">
-//                         <h2>Full Quotation</h2>
-//                         <CloseIcon onClick={toggleDrawer(false)} />
-//                     </div>
-//                     <div className="drawer-tabs">
-//                         <button className={tabValue === 0 ? "active" : ""} onClick={() => handleTabChange(0)}>Without GST</button>
-//                         <button className={tabValue === 1 ? "active" : ""} onClick={() => handleTabChange(1)}>With GST</button>
-//                     </div>
-//                     <div className="drawer-body">
-//                         <h3>Freight Charge</h3>
-//                         <p>O/F: ₹ {quoteData?.vessel.freight_charges}</p>
-//                         <h3>Origin Charge</h3>
-//                         <p>BL Fee: ₹ {quoteData?.vessel.bl_fee}</p>
-//                         <p>Seal Fee: ₹ {quoteData?.vessel.seal_fee}</p>
-//                         <p>MUC: ₹ {quoteData?.vessel.muc}</p>
-//                         <p>Toll Charge: ₹ {quoteData?.vessel.toll_charge}</p>
-//                         <p>Temperature Variance: ₹ {quoteData?.vessel.temperature_variance}</p>
-//                         <p>Platform Fee: ₹ {quoteData?.vessel.plateform_fee}</p>
-//                         <p>ISPS: ₹ {quoteData?.vessel.isps}</p>
-//                         <p>THC(BMCT): ₹ {quoteData?.vessel.thc_bmct}</p>
-//                         <p>Surrender BL: ₹ {quoteData?.vessel.surrender_bl}</p>
-//                     </div>
-//                     <div className="drawer-footer">
-//                         <span>Total: ₹ {tabValue === 0 ? quoteData?.total_charges : quoteData?.total}</span>
-//                     </div>
-//                 </div>
-//             </Drawer>
-//         </div>
-//     );
-// }
-
-// export default FullQuotePage;
-
-
-
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -194,8 +41,50 @@ function FullQuotePage() {
         navigate(-1);
     };
 
-    const handlePlaceOrder = () => {
-        alert("Order placed successfully!");
+    const handlePlaceOrder = async () => {
+        try {
+            const orderData = {
+                name: "John Doe", 
+                email: "john.doe@example.com", 
+                mobile: "1234567890", 
+                ship_name: selectedResult?.shipname || null, 
+                ship_date: selectedResult?.departure || null, 
+                port_from: fromLocation?.code || null, 
+                port_to: toLocation?.code || null, 
+                user_id: 1, 
+                quote: quoteData?.vessel?.freight_charges || null, 
+                vessel_id: selectedResult?.id || null, 
+                total: quoteData?.total || 0, 
+                vessel: selectedResult ? { 
+                    id: selectedResult.id 
+                } : null,
+                user: { 
+                    id: 1
+                }
+            };
+
+            console.log('Order data being sent:', orderData);
+
+            const response = await fetch('https://app.seaprince.click4demos.co.in/api/order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error: ${response.status} - ${JSON.stringify(errorData)}`);
+            }
+            
+            console.log('Order placed successfully:', await response.json());
+            alert("Order placed successfully!");
+        } 
+        catch (error) {
+            console.error('Error placing order:', error);
+            alert(`Failed to place order: ${error.message}`);
+        }
     };
 
     const toggleDrawer = (open) => () => {
@@ -476,3 +365,4 @@ function FullQuotePage() {
 }
 
 export default FullQuotePage;
+

@@ -1,196 +1,3 @@
-
-// import React, { useState, useEffect, useContext } from "react";
-// import { useNavigate, useLocation } from "react-router-dom";
-// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import CallSharpIcon from '@mui/icons-material/CallSharp';
-// import { Swiper, SwiperSlide } from 'swiper/react';
-// import 'swiper/swiper-bundle.min.css';
-// import Skeleton from 'react-loading-skeleton';
-// import 'react-loading-skeleton/dist/skeleton.css';
-// import "../assets/css/resultsPage.css";
-// import { LocationContext } from '../context/LocationContext';
-
-// function ResultsPage() {
-//     const navigate = useNavigate();
-//     const location = useLocation();
-//     const { fromLocation, toLocation, results, setResults, setSelectedResult } = useContext(LocationContext);
-//     const [loading, setLoading] = useState(true);
-
-//     useEffect(() => {
-//         setTimeout(() => setLoading(false), 1500);
-//         // Fetch results data and set it in context
-//         const fetchedResults = [
-//             {
-//                 name: "Ship Name",
-//                 imgSrc: require("../assets/image/why-choose-icon1.png"),
-//                 startDate: "07 Feb",
-//                 endDate: "11 Feb",
-//                 days: "1 Day",
-//                 stations: "Direct",
-//                 price: "$ 1,100",
-//                 containersAvailable: "2 Container Available",
-//             },
-//             {
-//                 name: "Ship Name",
-//                 imgSrc: require("../assets/image/why-choose-icon2.png"),
-//                 startDate: "08 Feb",
-//                 endDate: "12 Feb",
-//                 days: "2 Days",
-//                 stations: "Direct",
-//                 price: "$ 1,200",
-//                 containersAvailable: "3 Container Available",
-//             },
-//             {
-//                 name: "Ship Name",
-//                 imgSrc: require("../assets/image/why-choose-icon6.png"),
-//                 startDate: "09 Feb",
-//                 endDate: "13 Feb",
-//                 days: "4 Days",
-//                 stations: " AUH",
-//                 price: "$ 1,300",
-//                 containersAvailable: "1 Container Available",
-//             },
-//             {
-//                 name: "Ship Name",
-//                 imgSrc: require("../assets/image/why-choose-icon4.png"),
-//                 startDate: "10 Feb",
-//                 endDate: "14 Feb",
-//                 days: "5 Days",
-//                 stations: "Direct",
-//                 price: "$ 1,400",
-//                 containersAvailable: "4 Container Available",
-//             }
-//         ];
-//         setResults(fetchedResults);
-//     }, [setResults]);
-
-//     const handleBackClick = () => {
-//         navigate("/", { state: { from: fromLocation, to: toLocation }, replace: true });
-//     };
-
-//     const handleFullQuoteClick = (result) => {
-//         setSelectedResult(result);
-//         navigate("/full-quote", { state: { fromName: fromLocation.name, fromCode: fromLocation.code, toName: toLocation.name, toCode: toLocation.code, selectedResult: result } });
-//     };
-
-//     const slides = [
-//         { title: "ATLANTIC IBIS", date: "05 Feb", day: "Wed" },
-//         { title: "C START VOYAG", date: "06 Feb", day: "Thu" },
-//         { title: "OCEAN BREEZE", date: "07 Feb", day: "Fri" },
-//     ];
-
-//     return (
-//         <div className="results-page">
-//             <div className="results-page-header">
-//                 <ArrowBackIcon onClick={handleBackClick} />
-//                 <h2>{fromLocation.name} To {toLocation.name}</h2>
-//             </div>
-//             <div className="results-page-content">
-//                 <h2>Upcoming Vessels</h2>
-//                 <Swiper grabCursor={true}
-//                     spaceBetween={10}
-//                     breakpoints={{
-//                         0: {
-//                             slidesPerView: 1.2,
-//                         },
-//                         320: { slidesPerView: 1.5 },
-//                         400: { slidesPerView: 1.8 },
-//                         425: { slidesPerView: 2 },
-//                         500: { slidesPerView: 2.5 },
-//                     }}
-//                 >
-//                     {loading ? (
-//                         Array(3).fill().map((_, index) => (
-//                             <SwiperSlide key={index}>
-//                                 <div className="slide-content">
-//                                     <Skeleton height={20} width={150} baseColor="transparent" highlightColor="#ffffffab" />
-//                                     <Skeleton height={20} width={100} baseColor="transparent" highlightColor="#ffffffab" />
-//                                 </div>
-//                             </SwiperSlide>
-//                         ))
-//                     ) : (
-//                         slides.map((slide, index) => (
-//                             <SwiperSlide key={index}>
-//                                 <div className="slide-content">
-//                                     <h3>{slide.title}</h3>
-//                                     <p><span>{slide.date}</span> | <span>{slide.day}</span></p>
-//                                 </div>
-//                             </SwiperSlide>
-//                         ))
-//                     )}
-//                 </Swiper>
-
-//                 <h2>Search Result</h2>
-//                 {loading ? (
-//                     Array(4).fill().map((_, index) => (
-//                         <div className="result_box" key={index}>
-//                             <Skeleton height={200} baseColor="#d3d3d3" highlightColor="#ffffffab" />
-//                             <br />
-//                         </div>
-//                     ))
-//                 ) : (
-//                     results.length === 0 ? (
-//                         <div className="no-results">
-//                             <h3>No results found for the selected route.</h3>
-//                         </div>
-//                     ) : (
-//                         results.map((result, index) => (
-//                             <div className="result_box" key={index}>
-//                                 <div className="result_box_inner">
-//                                     <div className="result_box_inner_up">
-//                                         <div>
-//                                             <img src={result.imgSrc} alt="" />
-//                                         </div>
-//                                         <div className="result_box_inner_content">
-//                                             <h2>{result.name}</h2>
-//                                             <p>{result.startDate} <span></span> {result.endDate}</p>
-//                                         </div>
-//                                         <div className="result_box_timing">
-//                                             <p>{result.days}</p>
-//                                             <p>{result.stations}</p>
-//                                         </div>
-//                                         <div>
-//                                             <h3>{result.price}</h3>
-//                                         </div>
-//                                     </div>
-//                                     <div className="result_box_inner_down">
-//                                         <p>{result.containersAvailable}</p>
-//                                         <button onClick={() => handleFullQuoteClick(result)}>Check Full Quote</button>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         ))
-//                     )
-//                 )}
-
-//                 {loading ? (
-//                     <div className="contact_box">
-//                         <Skeleton circle={true} height={50} width={50} baseColor="#d3d3d3" highlightColor="#ffffffab" />
-//                         <div style={{ marginLeft: '20px' }}>
-//                             <Skeleton height={20} width={200} baseColor="#d3d3d3" highlightColor="#ffffffab" />
-//                             <Skeleton height={20} width={150} style={{ marginTop: '5px' }} baseColor="#d3d3d3" highlightColor="#ffffffab" />
-//                         </div>
-//                     </div>
-//                 ) : (
-//                     <div className="contact_box">
-//                         <div>
-//                             <img src={require("../assets/image/person.png")} alt="" />
-//                         </div>
-//                         <div>
-//                             <p>Need Help? Talk to our price consultant</p>
-//                             <a href="tel:+0123456789">Faisal Shaik <CallSharpIcon /></a>
-//                         </div>
-//                     </div>
-//                 )}
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default ResultsPage;
-
-
-
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -201,6 +8,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import "../assets/css/resultsPage.css";
 import { LocationContext } from '../context/LocationContext';
+import ResultList from './ResultList';
 
 function ResultsPage() {
     const navigate = useNavigate();
@@ -208,7 +16,6 @@ function ResultsPage() {
     const { fromLocation, toLocation, setSelectedResult } = useContext(LocationContext);
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -226,12 +33,10 @@ function ResultsPage() {
             } finally {
                 setLoading(false);
             }
-            setLoading(false);
         };
 
         fetchResults();
     }, [fromLocation, toLocation]);
-
 
     const handleBackClick = () => {
         navigate("/", { state: { from: fromLocation, to: toLocation }, replace: true });
@@ -290,63 +95,7 @@ function ResultsPage() {
                 </Swiper>
 
                 <h2>Search Result</h2>
-                {loading ? (
-                    Array(4).fill().map((_, index) => (
-                        <div className="result_box" key={index}>
-                            <Skeleton height={200} baseColor="#d3d3d3" highlightColor="#ffffffab" />
-                            <br />
-                        </div>
-                    ))
-                ) : (
-                    results.length === 0 ? (
-                        <div className="no-results">
-                            <h3>No results found for the selected route.</h3>
-                        </div>
-                    ) : (
-                        results.map((result, index) => (
-                            <div className="result_box" key={index}>
-                                <div className="result_box_inner">
-                                    <div className="result_box_inner_up">
-                                        <div>
-                                            <img src={result.imgSrc || require("../assets/image/loader.png")} alt=" " />
-                                        </div>
-                                        <div className="result_box_inner_content">
-                                            <h2>{result.shipname}</h2>
-                                            <p>
-                                                {new Date(result.departure).toLocaleDateString("en-GB", {
-                                                    day: "2-digit",
-                                                    month: "2-digit",
-                                                    year: "numeric"
-                                                })}
-                                                <span></span>
-                                                {new Date(result.arrival).toLocaleDateString("en-GB", {
-                                                    day: "2-digit",
-                                                    month: "2-digit",
-                                                    year: "numeric"
-                                                })}
-                                            </p>
-                                        </div>
-                                        <div className="result_box_timing">
-                                            <p>
-                                                {result.days
-                                                    ? `${result.days} Days`
-                                                    : `${Math.max(0, (new Date(result.arrival) - new Date(result.departure)) / (1000 * 60 * 60 * 24))} Days`}
-                                            </p>
-                                            <p>{result.from} To {result.to || "Direct"}</p>
-                                        </div>
-                                        <div>
-                                            <h3><b>₹ </b>{result.total_charges || "N/A"}</h3>
-                                        </div>
-                                    </div>
-                                    <div className="result_box_inner_down">
-                                        <p>{result.availibility || "N/A"}</p>
-                                        <button onClick={() => handleFullQuoteClick(result)}>Check Full Quote</button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))
-                    )
-                )}
+                <ResultList results={results} loading={loading} handleFullQuoteClick={handleFullQuoteClick} />
 
                 {loading ? (
                     <div className="contact_box">
@@ -373,3 +122,5 @@ function ResultsPage() {
 }
 
 export default ResultsPage;
+
+

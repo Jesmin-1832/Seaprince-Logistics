@@ -1,0 +1,107 @@
+.register-page {
+    height: 100%;
+    margin: 0 auto;
+    background: url("../image/login_bg.jpg") ,  linear-gradient(var(--primary-color), var(--secondary-color));
+    background-blend-mode: multiply;
+    background-repeat: repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+}
+
+.register-page .register-background {
+    height: 40%;
+}
+.register-page .register-background img { 
+    width: 100%;
+    height: 90%;
+    padding: 30px;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+.register-page .register-form {
+    height: max-content;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 50px 20px;
+    border-radius: 30px 30px 0 0;
+    box-shadow: 0 0px 20px 0 rgba(0, 0, 0, 0.5);
+}
+
+.register-page .form-group {
+    margin-bottom: 30px;
+    text-align: start;
+}
+
+.register-page .form-group label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.register-page .form-group .form-input {
+    position: relative;
+}
+.register-page .form-group .form-input input {
+    width: 100%;
+    padding: 15px 40px;
+    font-size: 16px;
+    color: white;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.4s all;
+}
+.register-page .form-group .form-input input:focus {
+    box-shadow: 0 0 5px 0 white;
+}
+.register-page .form-group .form-input svg {
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+}
+.register-page .form-group .form-input .form-icon-inner svg {
+    left: auto;
+    right: 10px;
+    cursor: pointer;
+}
+
+.register-page .submit-button {
+    width: 100%;
+    max-width: 300px;
+    font-size: 18px;
+    padding: 10px 25px;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.4s all;
+}
+.register-page .submit-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+.register-page .register-form p {
+    margin: 20px;
+    user-select: none;
+}
+.register-page .register-form p a {
+    color: white;
+    font-weight: bold;
+}
+
+.register-page .error-message {
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+    display: inline-block;
+    margin-bottom: 20px;
+    background: white;
+    width: max-content;
+    padding: 0 5px;
+}

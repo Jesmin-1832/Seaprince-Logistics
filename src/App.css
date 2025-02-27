@@ -26,18 +26,18 @@ body {
 }
 ::-webkit-scrollbar{
   width: 5px;
-  background-color: transparent;
-  z-index: 999;
+  background-color: var(--primary-color);
+  z-index: 999; 
 }
 ::-webkit-scrollbar-thumb{
-  background-color: #111741;
+  background-color: white;
   border-radius: 5px;
   cursor: pointer;
 }
 .main {
   position: relative;
   height: 100vh;
-  overflow: scroll;
+  overflow-y: scroll;
   background: white;
   max-width: 575px;
   margin: 0 auto;
@@ -46,4 +46,14 @@ body {
 .container {
   width: 100%;
   padding: 0 15px;
+}
+
+.bottomNavigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 575px;
+  margin: 0 auto;
+  z-index: 99;
 }

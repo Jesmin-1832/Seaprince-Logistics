@@ -344,20 +344,8 @@
 /* Home Image Section End */
 
 
-.css-cnic6m-MuiPaper-root {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 575px;
-    margin: 0 auto;
-    z-index: 99;
-}
-
 .error-message {
     color: red;
     font-size: 14px;
     margin: 0 auto;
-    padding-top: 10px;
-    padding-left: 24px;
 }
