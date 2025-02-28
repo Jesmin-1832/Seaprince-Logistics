@@ -1,0 +1,136 @@
+.profile-page {
+    padding: 15px;
+    color: #333;
+    margin: 0 auto;
+}
+
+.profile-page-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-page-header svg {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.profile-page-header h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+.profile-page .user-details {
+    margin-bottom: 20px;
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: start;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-page .user-details .user-logo div {
+    border-radius: 50%;
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    user-select: none;
+    color: white;
+    background-color: var(--primary-color);
+}
+
+.profile-page .user-details .user-details-content p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+    text-align: start;
+    word-break: break-word;
+}
+
+.profile-page .heading {
+    text-align: start;
+    font-size: 20px;
+}
+
+.profile-page .orders-list {
+    text-align: start;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.profile-page .order-item {
+    background: #ffffff;
+    position: relative;
+    padding: 5px 40px 5px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    transition: 0.2s all;
+    cursor: pointer;
+}
+
+.profile-page .order-item:hover {
+    background-color: #f1f1f1;
+}
+
+.profile-page .order-item p {
+    text-transform: capitalize;
+    margin: 5px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.profile-page .order-item svg {
+    color: #555;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+}
+
+.profile-page .order-item .order-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.profile-page .order-item .order-total {
+    font-weight: bold;
+    color: #000;
+}
+
+
+.drawer-content .drawer-inner {
+    margin-bottom: 20px;
+}
+
+.drawer-content .drawer-inner p {
+    text-transform: capitalize;
+    padding: 8px 0;
+    font-size: 16px;
+    color: var(--primary-color);
+    cursor: default;
+    border-bottom: 1px solid #ddd;
+}
+
+.drawer-content .drawer-inner p strong {
+    margin-right: 5px;
+}
+
+.drawer-content .drawer-inner div {
+    margin-bottom: 10px;
+}
+
+
+
+@media (max-width:375px) {
+    .user-details {
+        flex-direction: column;
+    }
+}
