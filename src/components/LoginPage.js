@@ -6,6 +6,8 @@ import '../assets/css/loginPage.css';
 import { MdOutlineEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -16,8 +18,6 @@ const LoginPage = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const restrictionEnabled = true; // Set this to false to disable restriction
-        if (!restrictionEnabled) return;
 
         try {
             await axios.get(`${config.apiUrl}/csrf-token`, { withCredentials: false });
@@ -25,9 +25,24 @@ const LoginPage = () => {
                 email,
                 password
             }, { withCredentials: false });
-            navigate('/');
+            toast.success('Login successful!', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                draggable: true,
+                theme: "dark",
+            });
+            setTimeout(() => {
+                navigate('/');
+            }, 2500);
         } catch (err) {
-            setError('Login failed. Please try again.');
+            toast.error('Login failed. Please try again.', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                draggable: true,
+                theme: "dark",
+            });
         }
     };
 
@@ -40,6 +55,7 @@ const LoginPage = () => {
             <div className='login-background'>
                 <img src={require("../assets/image/Seaprince-white.png")} alt="LOGO" />
             </div>
+            <ToastContainer limit={5} autoClose={3000} draggable />
             <form onSubmit={handleLogin} className="login-form">
                 <div className="form-group">
                     <label>Enter Your Email :</label>
@@ -51,11 +67,11 @@ const LoginPage = () => {
                 <div className="form-group">
                     <label>Enter Your Password :</label>
                     <div className='form-input'>
-                        <input 
-                            type={showPassword ? "text" : "password"} 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required 
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                         <RiLockPasswordLine />
                         <div className='form-icon-inner' onClick={togglePasswordVisibility}>
@@ -63,7 +79,6 @@ const LoginPage = () => {
                         </div>
                     </div>
                 </div>
-                {error && <p className="error-message">{error}</p>}
                 <button type="submit" className="submit-button">Login</button>
                 <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
             </form>

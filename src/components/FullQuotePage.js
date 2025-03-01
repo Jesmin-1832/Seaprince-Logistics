@@ -86,6 +86,9 @@ function FullQuotePage() {
                 theme: "dark",
                 transition: Bounce,
             });
+            setTimeout(() => {
+                navigate('/profile');
+            }, 2500);
         }
         catch (error) {
             console.error('Error placing order:', error);

@@ -6,6 +6,8 @@ import '../assets/css/registerPage.css';
 import { MdOutlineEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { FaRegEye, FaRegEyeSlash, FaRegUser } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage = () => {
     const [name, setName] = useState('');
@@ -17,8 +19,6 @@ const RegisterPage = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        const restrictionEnabled = true; // Set this to false to disable restriction
-        if (!restrictionEnabled) return;
 
         try {
             await axios.get(`${config.apiUrl}/csrf-token`, { withCredentials: false });
@@ -27,9 +27,24 @@ const RegisterPage = () => {
                 email,
                 password
             }, { withCredentials: false });
-            navigate('/login');
+            toast.success('Registration successful!', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                draggable: true,
+                theme: "dark",
+            });
+            setTimeout(() => {
+                navigate('/');
+            }, 2500);
         } catch (err) {
-            setError('Registration failed. Please try again.');
+            toast.error('Registration failed. Please try again.', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                draggable: true,
+                theme: "dark",
+            });
         }
     };
 
@@ -42,6 +57,7 @@ const RegisterPage = () => {
             <div className='register-background'>
                 <img src={require("../assets/image/Seaprince-white.png")} alt="LOGO" />
             </div>
+            <ToastContainer limit={5} autoClose={3000} draggable /> 
             <form onSubmit={handleRegister} className="register-form">
                 <div className="form-group">
                     <label>Enter Your Name :</label>
@@ -60,11 +76,11 @@ const RegisterPage = () => {
                 <div className="form-group">
                     <label>Enter Your Password :</label>
                     <div className='form-input'>
-                        <input 
-                            type={showPassword ? "text" : "password"} 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required 
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                         <RiLockPasswordLine />
                         <div className='form-icon-inner' onClick={togglePasswordVisibility}>

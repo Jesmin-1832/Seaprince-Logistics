@@ -4,6 +4,13 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Skeleton from 'react-loading-skeleton';
 import Drawer from '@mui/material/Drawer';
 import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import EditIcon from '@mui/icons-material/Edit';
 import 'react-loading-skeleton/dist/skeleton.css';
 import "../assets/css/profilePage.css";
 import { LocationContext } from '../context/LocationContext';
@@ -12,7 +19,7 @@ import { FaAngleRight } from 'react-icons/fa';
 
 function ProfilePage() {
     const navigate = useNavigate();
-    const { selectedResult } = useContext(LocationContext);
+    const { fromLocation, toLocation, selectedResult } = useContext(LocationContext);
     const [userData, setUserData] = useState({
         name: orderData.name,
         email: orderData.email,
@@ -23,13 +30,17 @@ function ProfilePage() {
     const getUserInitials = (name) => {
         const nameParts = name.split(' ');
         const initials = nameParts.map(part => part[0]).join('').toUpperCase();
-        return initials.slice(0, 2); 
+        return initials.slice(0, 2);
     };
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [editMode, setEditMode] = useState(false);
+    const [updatedUserData, setUpdatedUserData] = useState({ ...userData });
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const userId = orderData.id; 
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -38,7 +49,6 @@ function ProfilePage() {
                 if (!response.ok) throw new Error(`Error: ${response.status}`);
 
                 const data = await response.json();
-                console.log('Fetched Orders:', data);
 
                 if (data.order && Array.isArray(data.order)) {
                     const filteredOrders = data.order.filter(order =>
@@ -47,7 +57,6 @@ function ProfilePage() {
                         order.mobile === userData.phone
                     );
 
-                    console.log('Filtered Orders:', filteredOrders);
                     setOrders(filteredOrders);
                 } else {
                     console.warn('Unexpected API response format:', data);
@@ -77,6 +86,41 @@ function ProfilePage() {
         setDrawerOpen(open);
     };
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUpdatedUserData({ ...updatedUserData, [name]: value });
+    };
+
+    const handleEditClick = () => {
+        setDialogOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+        setEditMode(false);
+    };
+
+    const handleSaveClick = async () => {
+        try {
+            const response = await fetch(`http://app.seaprince.click4demos.co.in/api/users/${userId}?name=${updatedUserData.name}&email=${updatedUserData.email}&phone=${updatedUserData.phone}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+            const data = await response.json();
+            console.log('Updated User Data:', data);
+            setUserData(updatedUserData);
+            setDialogOpen(false);
+            setEditMode(false);
+        } catch (error) {
+            console.error('Error updating user data:', error);
+        }
+    };
+
     return (
         <div className="profile-page">
             <div className="profile-page-header">
@@ -98,12 +142,54 @@ function ProfilePage() {
                         <div>{getUserInitials(userData.name)}</div>
                     </div>
                     <div className="user-details-content">
+                        <EditIcon 
+                            onClick={handleEditClick} 
+                            style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }} 
+                        />
                         <p><strong>Name:</strong> {userData.name}</p>
                         <p><strong>Email:</strong> {userData.email}</p>
                         <p><strong>Phone:</strong> {userData.phone}</p>
                     </div>
                 </div>
             )}
+
+            <Dialog open={dialogOpen} onClose={handleDialogClose} style={{width: '100%' , maxWidth:'600px', margin: 'auto'}} >
+                <DialogTitle>Edit Profile</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Name"
+                        name="name"
+                        value={updatedUserData.name}
+                        onChange={handleInputChange}
+                        fullWidth
+                        margin="dense"
+                    />
+                    <TextField
+                        label="Email"
+                        name="email"
+                        value={updatedUserData.email}
+                        onChange={handleInputChange}
+                        fullWidth
+                        margin="dense"
+                    />
+                    <TextField
+                        label="Phone"
+                        name="phone"
+                        value={updatedUserData.phone}
+                        onChange={handleInputChange}
+                        fullWidth
+                        margin="dense"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="secondary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleSaveClick} color="primary">
+                        Update
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             <h2 className='heading'>My Orders</h2>
             {loading ? (
@@ -121,7 +207,7 @@ function ProfilePage() {
                     ) : (
                         orders.map((order, index) => (
                             <div className="order-item" key={order.id || index} onClick={() => handleOrderClick(order)}>
-                                <p>{index+1}.  <strong> {order.ship_name || 'N/A'} </strong> ({order.ship_date})</p>
+                                <p>{index + 1}.  <strong> {order.ship_name || 'N/A'} </strong> ( {fromLocation.name + " → " + toLocation.name} )</p>
                                 <FaAngleRight />
                             </div>
                         ))
@@ -172,3 +258,4 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
+
