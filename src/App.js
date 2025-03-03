@@ -23,7 +23,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProfilePage from './components/ProfilePage';
 
-function App() { 
+function App() {
   return (
     // <AuthProvider
     //   config={{
