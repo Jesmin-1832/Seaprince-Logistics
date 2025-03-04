@@ -5,6 +5,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { LocationContext } from "../context/LocationContext";
 import { fetchPorts } from "../api/ports";
+import config from "../api/config";  
 
 function FromPage() {
     const navigate = useNavigate();
@@ -31,13 +32,13 @@ function FromPage() {
         // Retrieve recent searches from localStorage
         const storedSearches = JSON.parse(localStorage.getItem("recentSearches")) || [];
         if (storedSearches.length > 0) {
-            setRecentSearches(storedSearches);
+            setRecentSearches(storedSearches); 
         }
 
         // Fetch available ports from the search API
         const fetchAvailablePorts = async () => {
             try {
-                const response = await fetch('https://app.seaprince.click4demos.co.in/api/search');
+                const response = await fetch(`${config.apiUrl}/api/search`);
                 const data = await response.json();
                 const availableFromPorts = data.map(item => item.from);
                 setAvailablePorts(availableFromPorts);

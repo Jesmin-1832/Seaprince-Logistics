@@ -25,7 +25,7 @@ body {
   color: var(--white-color);
 }
 ::-webkit-scrollbar{
-  width: 5px;
+  width: 3px;
   background-color: var(--primary-color);
   z-index: 999; 
 }

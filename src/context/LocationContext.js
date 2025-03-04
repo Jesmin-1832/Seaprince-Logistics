@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import config from '../api/config';  
 
 export const LocationContext = createContext();
 

@@ -9,6 +9,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import "../assets/css/resultsPage.css";
 import { LocationContext } from '../context/LocationContext';
 import ResultList from './ResultList';
+import config from "../api/config";  
 
 function ResultsPage() {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ function ResultsPage() {
             try {
                 const fromCode = fromLocation.code;
                 const toCode = toLocation.code;
-                const response = await fetch(`https://app.seaprince.click4demos.co.in/api/search?from=${fromCode}&to=${toCode}`);
+                const response = await fetch(`${config.apiUrl}/api/search?from=${fromCode}&to=${toCode}`);
 
                 if (!response.ok) throw new Error(`Error: ${response.status}`);
 

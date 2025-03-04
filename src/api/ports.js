@@ -1,6 +1,8 @@
+import config from "../api/config";  
+
 export const fetchPorts = async () => {
     try {
-        const response = await fetch('https://app.seaprince.click4demos.co.in/api/ports');
+        const response = await fetch(`${config.apiUrl}/api/ports`);
         const data = await response.json();
         return {
             to: Array.isArray(data.to) ? data.to : [],

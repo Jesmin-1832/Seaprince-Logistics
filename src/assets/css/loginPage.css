@@ -57,6 +57,7 @@
 .login-page .form-group .form-input input:focus {
     box-shadow: 0 0 5px 0 white;
 }
+
 .login-page .form-group .form-input svg {
     font-size: 20px;
     position: absolute;

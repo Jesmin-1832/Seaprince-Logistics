@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import "../assets/css/home.css";
 import { Grid, Button } from "@mui/material";
@@ -10,6 +9,7 @@ import 'swiper/swiper-bundle.min.css';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { LocationContext } from '../context/LocationContext';
+import config from "../api/config";  
 
 function HomePage() {
     const [tabValue, setTabValue] = useState(0);
@@ -66,7 +66,7 @@ function HomePage() {
             };
             const queryString = new URLSearchParams(searchData).toString();
             try {
-                const response = await fetch(`https://app.seaprince.click4demos.co.in/api/search?${queryString}`, {
+                const response = await fetch(`${config.apiUrl}/api/search?${queryString}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'

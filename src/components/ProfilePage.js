@@ -16,6 +16,7 @@ import "../assets/css/profilePage.css";
 import { LocationContext } from '../context/LocationContext';
 import { orderData } from './FullQuotePage';
 import { FaAngleRight } from 'react-icons/fa';
+import config from '../api/config';  
 
 function ProfilePage() {
     const navigate = useNavigate();
@@ -23,8 +24,7 @@ function ProfilePage() {
     const [userData, setUserData] = useState({
         name: orderData.name,
         email: orderData.email,
-        phone: orderData.mobile,
-        image: orderData.image || 'default-profile.png', // Add image URL or default image
+        mobile: orderData.mobile,
     });
 
     const getUserInitials = (name) => {
@@ -45,7 +45,7 @@ function ProfilePage() {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch('https://app.seaprince.click4demos.co.in/api/order');
+                const response = await fetch(`${config.apiUrl}/api/order`);
                 if (!response.ok) throw new Error(`Error: ${response.status}`);
 
                 const data = await response.json();
@@ -99,10 +99,10 @@ function ProfilePage() {
         setDialogOpen(false);
         setEditMode(false);
     };
-
+    
     const handleSaveClick = async () => {
         try {
-            const response = await fetch(`http://app.seaprince.click4demos.co.in/api/users/${userId}?name=${updatedUserData.name}&email=${updatedUserData.email}&phone=${updatedUserData.phone}`, {
+            const response = await fetch(`${config.apiUrl}/api/users/name=${updatedUserData.name}&email=${updatedUserData.email}&phone=${updatedUserData.phone}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,13 +114,14 @@ function ProfilePage() {
             const data = await response.json();
             console.log('Updated User Data:', data);
             setUserData(updatedUserData);
+            localStorage.setItem('userData', JSON.stringify(updatedUserData));
             setDialogOpen(false);
             setEditMode(false);
         } catch (error) {
             console.error('Error updating user data:', error);
         }
     };
-
+    
     return (
         <div className="profile-page">
             <div className="profile-page-header">
@@ -148,7 +149,7 @@ function ProfilePage() {
                         />
                         <p><strong>Name:</strong> {userData.name}</p>
                         <p><strong>Email:</strong> {userData.email}</p>
-                        <p><strong>Phone:</strong> {userData.phone}</p>
+                        <p><strong>Phone:</strong> {userData.mobile}</p>
                     </div>
                 </div>
             )}
@@ -207,7 +208,7 @@ function ProfilePage() {
                     ) : (
                         orders.map((order, index) => (
                             <div className="order-item" key={order.id || index} onClick={() => handleOrderClick(order)}>
-                                <p>{index + 1}.  <strong> {order.ship_name || 'N/A'} </strong> ( {fromLocation.name + " → " + toLocation.name} )</p>
+                                <p>{index + 1}.  <strong> {order.ship_name || 'N/A'} </strong> ( {order.port_from + " → " + order.port_to} )</p>
                                 <FaAngleRight />
                             </div>
                         ))

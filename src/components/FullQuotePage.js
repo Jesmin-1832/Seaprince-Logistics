@@ -10,11 +10,14 @@ import "../assets/css/fullQuotePage.css";
 import { LocationContext } from '../context/LocationContext';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import config from '../api/config';  
+
+const storedUserData = JSON.parse(localStorage.getItem('userData'));
 
 export const orderData = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    mobile: "1234567890",
+    name: storedUserData?.name || <span style={{color:"red"}}>Not Found</span>,
+    email: storedUserData?.email ||  <span style={{color:"red"}}>Not Found</span>,
+    mobile: storedUserData?.mobile ||  <span style={{color:"red"}}>Not Found</span>,
 };
 
 function FullQuotePage() {
@@ -29,7 +32,7 @@ function FullQuotePage() {
     useEffect(() => {
         const fetchQuoteData = async () => {
             try {
-                const response = await fetch(`https://app.seaprince.click4demos.co.in/api/quote?id=${selectedResult.id}`);
+                const response = await fetch(`${config.apiUrl}/api/quote?id=${selectedResult.id}`); 
                 if (!response.ok) throw new Error(`Error: ${response.status}`);
                 const data = await response.json();
                 setQuoteData(data);
@@ -53,6 +56,7 @@ function FullQuotePage() {
         try {
             const orderDataToSend = {
                 ...orderData,
+                id: selectedResult?.id || 'N/A',
                 ship_name: selectedResult?.shipname || "N/A",
                 ship_date: selectedResult?.departure || "N/A",
                 port_from: fromLocation?.code || "N/A",
@@ -65,7 +69,7 @@ function FullQuotePage() {
                 } : "N/A"
             };
 
-            const response = await fetch('https://app.seaprince.click4demos.co.in/api/order', {
+            const response = await fetch(`${config.apiUrl}/api/order`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
