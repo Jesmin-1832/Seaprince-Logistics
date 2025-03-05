@@ -10,14 +10,14 @@ import "../assets/css/fullQuotePage.css";
 import { LocationContext } from '../context/LocationContext';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import config from '../api/config';  
+import config from '../api/config';
 
 const storedUserData = JSON.parse(localStorage.getItem('userData'));
 
 export const orderData = {
-    name: storedUserData?.name || <span style={{color:"red"}}>Not Found</span>,
-    email: storedUserData?.email ||  <span style={{color:"red"}}>Not Found</span>,
-    mobile: storedUserData?.mobile ||  <span style={{color:"red"}}>Not Found</span>,
+    name: storedUserData?.name || "Not Found",
+    email: storedUserData?.email || "Not Found",
+    mobile: storedUserData?.phone || "Not Found",
 };
 
 function FullQuotePage() {
@@ -32,12 +32,13 @@ function FullQuotePage() {
     useEffect(() => {
         const fetchQuoteData = async () => {
             try {
-                const response = await fetch(`${config.apiUrl}/api/quote?id=${selectedResult.id}`); 
+                const response = await fetch(`${config.apiUrl}/api/quote?id=${selectedResult.id}`);
                 if (!response.ok) throw new Error(`Error: ${response.status}`);
                 const data = await response.json();
                 setQuoteData(data);
             } catch (error) {
                 console.error('Error fetching quote data:', error);
+                toast.error('Error fetching quote data:', error);
             } finally {
                 setLoading(false);
             }
@@ -82,29 +83,28 @@ function FullQuotePage() {
                 throw new Error(`Error: ${response.status} - ${JSON.stringify(errorData)}`);
             }
 
-            toast.success('Order Placed Successfully!', {
+            toast.success('Order placed successfully!', {
                 position: "top-center",
                 autoClose: 3000,
                 hideProgressBar: true,
                 draggable: true,
                 theme: "dark",
-                transition: Bounce,
             });
             setTimeout(() => {
                 navigate('/profile');
-            }, 2500);
+            }, 2000);
         }
         catch (error) {
             console.error('Error placing order:', error);
             const match = error.message.match(/"message":"(.*?)"/);
             if (match) {
+                // Handle error message
                 toast.error(match[1], {
                     position: "top-center",
-                    autoClose: 1000,
+                    autoClose: 3000,
                     hideProgressBar: true,
                     draggable: true,
                     theme: "dark",
-                    transition: Bounce,
                 });
             }
 
@@ -390,3 +390,6 @@ function FullQuotePage() {
 }
 
 export default FullQuotePage;
+
+
+

@@ -11,15 +11,13 @@ import RegisterPage from './components/RegisterPage';
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import { BrowserRouter as Router, Route, Routes, useNavigate, Navigate, useLocation } from 'react-router-dom';
-import { LocationProvider } from './context/LocationContext';
+import { LocationProvider } from './context/LocationContext'; 
 import NotFoundPage from './components/NotFoundPage';
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import DashboardCustomizeRoundedIcon from '@mui/icons-material/DashboardCustomizeRounded';
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
 import config from './api/config';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import ProfilePage from './components/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -28,21 +26,22 @@ function App() {
       <Router>
         <LocationProvider>
           <AppContent />
-          <ToastContainer />
         </LocationProvider>
       </Router>
   );
 }
 
-function AppContent() {
+function AppContent() { 
   const [navValue, setNavValue] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     setAuthenticated(!!token);
+    setLoading(false);
   }, []);
 
   const handleNavigationChange = (event, newValue) => {
@@ -67,6 +66,10 @@ function AppContent() {
 
   const showHeader = ["/", "/services", "/schedule"].includes(location.pathname);
   const showBottomNavigation = ["/", "/services", "/schedule", "/results"].includes(location.pathname);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="App">
@@ -138,6 +141,4 @@ function AppContent() {
 }
 
 export default App;
-
-
 

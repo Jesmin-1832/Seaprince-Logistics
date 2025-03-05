@@ -50,28 +50,36 @@ function Header({ setAuthenticated }) {
             });
             localStorage.removeItem('access_token');
             localStorage.removeItem('userData');
-            setAuthenticated(false);
-            toast.success('Sign out Successfully.', {
+            setTimeout(() => {
+                setAuthenticated(false);
+            }, 2000);
+            toast.success('Sign out Successfully !', {
                 position: "top-center",
                 autoClose: 3000,
                 hideProgressBar: true,
                 draggable: true,
                 theme: "dark",
             });
-            navigate('/login');
+            setTimeout(() => {
+                navigate('/login');
+            }, 2000);
         } catch (err) {
             if (err.response && err.response.status === 401) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('userData');
-                setAuthenticated(false);
-                navigate('/login');
-                toast.success('Sign out Successfully.', {
+                setTimeout(() => {
+                    setAuthenticated(false);
+                }, 2000);
+                toast.success('Sign out Successfully !', {
                     position: "top-center",
                     autoClose: 3000,
                     hideProgressBar: true,
                     draggable: true,
                     theme: "dark",
                 });
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
             } else {
                 toast.error('Sign out failed. Please try again.', {
                     position: "top-center",
@@ -101,15 +109,17 @@ function Header({ setAuthenticated }) {
                     </li>
                     <div>
                         <IconButton aria-label="delete" onClick={handleLogout}>
-                            <LogoutOutlinedIcon/>
+                            <LogoutOutlinedIcon />
                         </IconButton>
                     </div>
                 </ul>
             </nav>
+            <ToastContainer limit={5} autoClose={3000} draggable />
         </header>
     );
 }
 export default Header;
+
 
 
 

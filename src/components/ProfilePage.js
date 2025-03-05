@@ -16,7 +16,9 @@ import "../assets/css/profilePage.css";
 import { LocationContext } from '../context/LocationContext';
 import { orderData } from './FullQuotePage';
 import { FaAngleRight } from 'react-icons/fa';
-import config from '../api/config';  
+import config from '../api/config';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProfilePage() {
     const navigate = useNavigate();
@@ -24,7 +26,7 @@ function ProfilePage() {
     const [userData, setUserData] = useState({
         name: orderData.name,
         email: orderData.email,
-        mobile: orderData.mobile,
+        phone: orderData.mobile,
     });
 
     const getUserInitials = (name) => {
@@ -40,7 +42,7 @@ function ProfilePage() {
     const [editMode, setEditMode] = useState(false);
     const [updatedUserData, setUpdatedUserData] = useState({ ...userData });
     const [dialogOpen, setDialogOpen] = useState(false);
-    const userId = orderData.id; 
+    const userId = orderData.id;
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -53,8 +55,7 @@ function ProfilePage() {
                 if (data.order && Array.isArray(data.order)) {
                     const filteredOrders = data.order.filter(order =>
                         order.name?.toLowerCase() === userData.name.toLowerCase() &&
-                        order.email?.toLowerCase() === userData.email.toLowerCase() &&
-                        order.mobile === userData.phone
+                        order.email?.toLowerCase() === userData.email.toLowerCase()      
                     );
 
                     setOrders(filteredOrders);
@@ -99,10 +100,10 @@ function ProfilePage() {
         setDialogOpen(false);
         setEditMode(false);
     };
-    
+
     const handleSaveClick = async () => {
         try {
-            const response = await fetch(`${config.apiUrl}/api/users/name=${updatedUserData.name}&email=${updatedUserData.email}&phone=${updatedUserData.phone}`, {
+            const response = await fetch(`${config.apiUrl}/api/users/?name=${updatedUserData.name}&email=${updatedUserData.email}&phone=${updatedUserData.phone}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,18 +113,32 @@ function ProfilePage() {
             if (!response.ok) throw new Error(`Error: ${response.status}`);
 
             const data = await response.json();
-            console.log('Updated User Data:', data);
             setUserData(updatedUserData);
             localStorage.setItem('userData', JSON.stringify(updatedUserData));
             setDialogOpen(false);
             setEditMode(false);
+            toast.success('Profile updated successfully!', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                draggable: true,
+                theme: "dark",
+            });
         } catch (error) {
             console.error('Error updating user data:', error);
+            toast.error('Error updating profile. Please try again.', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                draggable: true,
+                theme: "dark",
+            });
         }
     };
-    
+
     return (
         <div className="profile-page">
+            <ToastContainer limit={5} autoClose={3000} draggable />
             <div className="profile-page-header">
                 <ArrowBackIcon onClick={handleBackClick} />
                 <h2>Profile Page</h2>
@@ -143,18 +158,18 @@ function ProfilePage() {
                         <div>{getUserInitials(userData.name)}</div>
                     </div>
                     <div className="user-details-content">
-                        <EditIcon 
-                            onClick={handleEditClick} 
-                            style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }} 
+                        <EditIcon
+                            onClick={handleEditClick}
+                            style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}
                         />
-                        <p><strong>Name:</strong> {userData.name}</p>
-                        <p><strong>Email:</strong> {userData.email}</p>
-                        <p><strong>Phone:</strong> {userData.mobile}</p>
+                        <p><strong>Name : </strong>{userData.name === "Not Found" ? (<span style={{ color: "red" }}> Not Found</span>) : userData.name}</p>
+                        <p><strong>Email : </strong>{userData.email === "Not Found" ? (<span style={{ color: "red" }}> Not Found</span>) : userData.email}</p>
+                        <p><strong>Phone : </strong>{userData.phone === "Not Found" ? (<span style={{ color: "red" }}> Not Found</span>) : userData.phone}</p>
                     </div>
                 </div>
             )}
 
-            <Dialog open={dialogOpen} onClose={handleDialogClose} style={{width: '100%' , maxWidth:'600px', margin: 'auto'}} >
+            <Dialog open={dialogOpen} onClose={handleDialogClose} style={{ width: '100%', maxWidth: '600px', margin: 'auto' }} >
                 <DialogTitle>Edit Profile</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -259,4 +274,6 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
+
+
 

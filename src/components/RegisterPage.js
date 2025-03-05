@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import config from '../api/config';  
+import config from '../api/config';
 import '../assets/css/registerPage.css';
 import { MdOutlineEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { FaRegEye, FaRegEyeSlash, FaRegUser } from 'react-icons/fa';
+import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +14,7 @@ const RegisterPage = ({ setAuthenticated }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [phone, setPhone] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
@@ -24,15 +26,18 @@ const RegisterPage = ({ setAuthenticated }) => {
             const response = await axios.post(`${config.apiUrl}/api/signup`, {
                 name,
                 email,
-                password
+                password,
+                phone
             }, { withCredentials: false });
 
             if (response.status === 201) {
                 const { access_token } = response.data;
                 localStorage.setItem('access_token', access_token);
-                const userData = { name, email }; 
+                const userData = { name, email, phone }; 
                 localStorage.setItem('userData', JSON.stringify(userData));
-                setAuthenticated(true);
+                setTimeout(() => {
+                    setAuthenticated(true);
+                }, 2000);
                 toast.success('Registration successful!', {
                     position: "top-center",
                     autoClose: 3000,
@@ -42,7 +47,7 @@ const RegisterPage = ({ setAuthenticated }) => {
                 });
                 setTimeout(() => {
                     navigate('/');
-                }, 2500);
+                }, 2000); // Ensure setTimeout is placed after toast.success
             } else {
                 throw new Error('Registration failed');
             }
@@ -69,16 +74,23 @@ const RegisterPage = ({ setAuthenticated }) => {
 
     return (
         <div className="register-page">
+            <ToastContainer limit={5} autoClose={3000} draggable />
             <div className='register-background'>
                 <img src={require("../assets/image/Seaprince-white.png")} alt="LOGO" />
             </div>
-            <ToastContainer limit={5} autoClose={3000} draggable /> 
             <form onSubmit={handleRegister} className="register-form">
                 <div className="form-group">
                     <label>Enter Your Name :</label>
                     <div className='form-input'>
                         <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
                         <FaRegUser />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label>Enter Your Phone :</label>
+                    <div className='form-input'>
+                        <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                        <LocalPhoneOutlinedIcon />
                     </div>
                 </div>
                 <div className="form-group">

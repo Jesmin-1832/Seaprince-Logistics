@@ -35,9 +35,11 @@ const LoginPage = ({ setAuthenticated }) => {
                 });
                 const userData = userResponse.data;
                 localStorage.setItem('userData', JSON.stringify(userData));
-                setAuthenticated(true);
-                toast.success('Login successful!', {
-                    position: "top-center",
+                setTimeout(() => {
+                    setAuthenticated(true);
+                }, 2000); 
+                toast.success('Login Successfully !', {
+                    position: "top-center", 
                     autoClose: 3000,
                     hideProgressBar: true,
                     draggable: true,
@@ -45,7 +47,7 @@ const LoginPage = ({ setAuthenticated }) => {
                 });
                 setTimeout(() => {
                     navigate('/');
-                }, 2500);
+                }, 2000); 
             } else {
                 throw new Error('Login failed');
             }
