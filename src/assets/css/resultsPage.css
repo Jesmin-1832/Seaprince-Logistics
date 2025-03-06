@@ -24,6 +24,7 @@
 }
 
 .results-page .results-page-header h2 {
+    text-transform: uppercase;
     color: var(--primary-color);
     font-size: 20px;
     font-weight: normal;

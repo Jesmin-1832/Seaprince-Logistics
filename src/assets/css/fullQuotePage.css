@@ -24,6 +24,7 @@
 }
 
 .full-quote-page .full-quote-page-header h2 {
+    text-transform: uppercase;
     flex: 0.9;
     font-size: 20px;
     font-weight: 500;

@@ -55,7 +55,7 @@ function ProfilePage() {
                 if (data.order && Array.isArray(data.order)) {
                     const filteredOrders = data.order.filter(order =>
                         order.name?.toLowerCase() === userData.name.toLowerCase() &&
-                        order.email?.toLowerCase() === userData.email.toLowerCase()      
+                        order.email?.toLowerCase() === userData.email.toLowerCase()     
                     );
 
                     setOrders(filteredOrders);
@@ -274,6 +274,4 @@ function ProfilePage() {
 }
 
 export default ProfilePage;
-
-
 

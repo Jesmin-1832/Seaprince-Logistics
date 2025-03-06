@@ -5,7 +5,7 @@ import "./assets/css/Header.css";
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 
 function Header({ setAuthenticated }) {
     const navigate = useNavigate();
@@ -108,9 +108,11 @@ function Header({ setAuthenticated }) {
                         </a>
                     </li>
                     <div>
-                        <IconButton aria-label="delete" onClick={handleLogout}>
-                            <LogoutOutlinedIcon />
-                        </IconButton>
+                        <Tooltip title="Log Out" arrow>
+                            <IconButton aria-label="delete" onClick={handleLogout}>
+                                <LogoutOutlinedIcon />
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 </ul>
             </nav>
@@ -119,7 +121,5 @@ function Header({ setAuthenticated }) {
     );
 }
 export default Header;
-
-
 
 
