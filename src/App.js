@@ -44,6 +44,25 @@ function AppContent() {
     setLoading(false);
   }, []);
 
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/":
+        setNavValue(0);
+        break;
+      case "/services":
+        setNavValue(1);
+        break;
+      case "/schedule":
+        setNavValue(2);
+        break;
+      case "/results":
+        setNavValue(3);
+        break;
+      default:
+        break;
+    }
+  }, [location.pathname]);
+
   const handleNavigationChange = (event, newValue) => {
     setNavValue(newValue);
     switch (newValue) {

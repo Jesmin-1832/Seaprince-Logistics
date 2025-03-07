@@ -23,7 +23,7 @@ const ResultList = ({ results, loading, handleFullQuoteClick }) => {
                             <div className="result_box_inner">
                                 <div className="result_box_inner_up">
                                     <div>
-                                        <img src={result.imgSrc || require("../assets/image/loader.png")} alt=" " />
+                                        <img src={`https://app.seaprince.click4demos.co.in/storage/` + result.carrier_image || require("../assets/image/loader.png")} alt=" " />
                                     </div>
                                     <div className="result_box_inner_content">
                                         <h2>{result.shipname}</h2>

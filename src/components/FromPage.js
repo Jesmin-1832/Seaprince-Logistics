@@ -112,7 +112,7 @@ function FromPage() {
                                         </div>
                                         <div style={{ textAlign: "end" }}>
                                             <span>{port.code}</span>
-                                            <p style={{ color: isPortAvailable(port.code) ? 'green' : 'red' }}>
+                                            <p style={{ color: isPortAvailable(port.code) ? 'green' : 'red', fontWeight:isPortAvailable(port.code) ? 'bold' : 'normal'  }}>
                                                 {isPortAvailable(port.code) ? "Available" : "N/A"}
                                             </p>
                                         </div>
@@ -135,7 +135,7 @@ function FromPage() {
                                     </div>
                                     <div style={{ textAlign: "end" }}>
                                         <span>{port.code}</span>
-                                        <p style={{ color: isPortAvailable(port.code) ? 'green' : 'red' }}>
+                                        <p style={{ color: isPortAvailable(port.code) ? 'green' : 'red' , fontWeight:isPortAvailable(port.code) ? 'bold' : 'normal'  }}>
                                             {isPortAvailable(port.code) ? "Available" : "N/A"}
                                         </p>
                                     </div>

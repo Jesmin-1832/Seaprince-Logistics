@@ -76,7 +76,7 @@ const LoginPage = ({ setAuthenticated }) => {
         <div className="login-page">
             <ToastContainer limit={5} autoClose={3000} draggable />
             <div className='login-background'>
-                <img src={require("../assets/image/Seaprince-white.png")} alt="LOGO" />
+                <img src={require("../assets/image/Seaprince-logo.png")} alt="LOGO" />
             </div>
             <form onSubmit={handleLogin} className="login-form">
                 <div className="form-group">

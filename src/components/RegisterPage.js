@@ -76,7 +76,7 @@ const RegisterPage = ({ setAuthenticated }) => {
         <div className="register-page">
             <ToastContainer limit={5} autoClose={3000} draggable />
             <div className='register-background'>
-                <img src={require("../assets/image/Seaprince-white.png")} alt="LOGO" />
+                <img src={require("../assets/image/Seaprince-logo.png")} alt="LOGO" />
             </div>
             <form onSubmit={handleRegister} className="register-form">
                 <div className="form-group">

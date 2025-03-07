@@ -19,6 +19,7 @@ import { FaAngleRight } from 'react-icons/fa';
 import config from '../api/config';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Tooltip } from '@mui/material';
 
 function ProfilePage() {
     const navigate = useNavigate();
@@ -28,13 +29,6 @@ function ProfilePage() {
         email: orderData.email,
         phone: orderData.mobile,
     });
-
-    const getUserInitials = (name) => {
-        const nameParts = name.split(' ');
-        const initials = nameParts.map(part => part[0]).join('').toUpperCase();
-        return initials.slice(0, 2);
-    };
-
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -54,8 +48,7 @@ function ProfilePage() {
 
                 if (data.order && Array.isArray(data.order)) {
                     const filteredOrders = data.order.filter(order =>
-                        order.name?.toLowerCase() === userData.name.toLowerCase() &&
-                        order.email?.toLowerCase() === userData.email.toLowerCase()     
+                        order.email?.toLowerCase() === userData.email.toLowerCase()
                     );
 
                     setOrders(filteredOrders);
@@ -103,10 +96,16 @@ function ProfilePage() {
 
     const handleSaveClick = async () => {
         try {
-            const response = await fetch(`${config.apiUrl}/api/users/?name=${updatedUserData.name}&email=${updatedUserData.email}&phone=${updatedUserData.phone}`, {
-                method: 'PUT',
+            const response = await fetch(`${config.apiUrl}/api/user`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: updatedUserData.name,
+                    email: updatedUserData.email,
+                    phone: updatedUserData.phone
+                }),
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`
                 },
             });
 
@@ -136,6 +135,12 @@ function ProfilePage() {
         }
     };
 
+    const getUserInitials = (name) => {
+        const nameParts = name.split(' ');
+        const initials = nameParts.map(part => part[0]).join('').toUpperCase();
+        return initials.slice(0, 2);
+    };
+
     return (
         <div className="profile-page">
             <ToastContainer limit={5} autoClose={3000} draggable />
@@ -158,10 +163,12 @@ function ProfilePage() {
                         <div>{getUserInitials(userData.name)}</div>
                     </div>
                     <div className="user-details-content">
-                        <EditIcon
-                            onClick={handleEditClick}
-                            style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}
-                        />
+                        <Tooltip title="Edit" arrow>
+                            <EditIcon
+                                onClick={handleEditClick}
+                                style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}
+                            />
+                        </Tooltip>
                         <p><strong>Name : </strong>{userData.name === "Not Found" ? (<span style={{ color: "red" }}> Not Found</span>) : userData.name}</p>
                         <p><strong>Email : </strong>{userData.email === "Not Found" ? (<span style={{ color: "red" }}> Not Found</span>) : userData.email}</p>
                         <p><strong>Phone : </strong>{userData.phone === "Not Found" ? (<span style={{ color: "red" }}> Not Found</span>) : userData.phone}</p>
@@ -181,10 +188,10 @@ function ProfilePage() {
                         margin="dense"
                     />
                     <TextField
+                        disabled
                         label="Email"
                         name="email"
                         value={updatedUserData.email}
-                        onChange={handleInputChange}
                         fullWidth
                         margin="dense"
                     />

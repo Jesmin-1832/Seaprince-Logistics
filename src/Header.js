@@ -97,14 +97,16 @@ function Header({ setAuthenticated }) {
             <nav>
                 <ul>
                     <li>
-                        <a href=" ">
-                            <img src={require("./assets/image/Seaprince-white.png")} alt="Logo" />
-                            {/* LOGO */}
-                        </a>
+                        <Tooltip title="Profile" arrow>
+                            <a href="/profile">
+                                <img src={require("./assets/image/user-logo.png")} alt="Profile" />
+                            </a>
+                        </Tooltip>
                     </li>
                     <li>
-                        <a href="/profile">
-                            <img src={require("./assets/image/user-logo.png")} alt="Profile" />
+                        <a href="/">
+                            <img src={require("./assets/image/Seaprince-white.png")} alt="Logo" />
+                            {/* LOGO */}
                         </a>
                     </li>
                     <div>

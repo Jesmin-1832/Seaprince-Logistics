@@ -174,15 +174,15 @@ function HomePage() {
                                     <Grid container spacing={3}>
                                         <Grid item xs={12}>
                                             <div className="form-box">
-                                                <div className="form-section" onClick={handleFromClick}>
+                                                <div className="form-section">
                                                     <h2>From</h2>
-                                                    <p>{fromLocation.name}</p>
-                                                    <span>{fromLocation.code}</span>
+                                                    <p>N/A</p>
+                                                    <span>N/A</span>
                                                 </div>
-                                                <div className="form-section" onClick={handleToClick}>
+                                                <div className="form-section">
                                                     <h2>To</h2>
-                                                    <p>{toLocation.name}</p>
-                                                    <span>{toLocation.code}</span>
+                                                    <p>N/A</p>
+                                                    <span>N/A</span>
                                                 </div>
                                             </div>
                                         </Grid>
@@ -190,7 +190,7 @@ function HomePage() {
                                             <p className="error-message">{error}</p>
                                         )}
                                         <Grid item xs={12}>
-                                            <Button variant="contained" color="primary" fullWidth onClick={handleSearch}>
+                                            <Button variant="contained" color="primary" fullWidth>
                                                 Search
                                             </Button>
                                         </Grid>

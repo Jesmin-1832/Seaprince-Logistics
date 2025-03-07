@@ -11,6 +11,12 @@ import { LocationContext } from '../context/LocationContext';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import config from '../api/config';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
 
 const storedUserData = JSON.parse(localStorage.getItem('userData'));
 
@@ -28,6 +34,7 @@ function FullQuotePage() {
     const [tabValue, setTabValue] = useState(0);
     const [loading, setLoading] = useState(true);
     const [quoteData, setQuoteData] = useState(null);
+    const [placeOrderDialogOpen, setPlaceOrderDialogOpen] = useState(false);
 
     useEffect(() => {
         const fetchQuoteData = async () => {
@@ -129,6 +136,19 @@ function FullQuotePage() {
             (thc_bmct || 0) + (surrender_bl || 0);
     };
 
+    const handlePlaceOrderClick = () => {
+        setPlaceOrderDialogOpen(true);
+    };
+
+    const handlePlaceOrderDialogClose = () => {
+        setPlaceOrderDialogOpen(false);
+    };
+
+    const handleConfirmPlaceOrder = () => {
+        handlePlaceOrder();
+        setPlaceOrderDialogOpen(false);
+    };
+
     return (
         <div className="full-quote-page">
             <div className="full-quote-page-header">
@@ -168,7 +188,7 @@ function FullQuotePage() {
                 ) : (
                     quoteData && quoteData.vessel ? (
                         <div className="quote-details">
-                            <img src={quoteData.vessel.carrier_image ? quoteData.vessel.carrier_image : require("../assets/image/loader.png")} alt=" " />
+                            <img src={`https://app.seaprince.click4demos.co.in/storage/` + quoteData.vessel.carrier_image ? `https://app.seaprince.click4demos.co.in/storage/` + quoteData.vessel.carrier_image : require("../assets/image/loader.png")} alt=" " />
                             <div className="quote-details-content">
                                 <h2>{quoteData.vessel.shipname}</h2>
                                 <p>Carrier: {quoteData.vessel.carrier}</p>
@@ -201,7 +221,7 @@ function FullQuotePage() {
                     ) : (
                         quoteData && quoteData.vessel && (
                             <>
-                                <div className="pricing-heading">
+                                <div className="pricing-heading" onClick={toggleDrawer(true)}>
                                     <div>
                                         <h2>Quotation</h2>
                                         <p>This quotation includes GST</p>
@@ -248,7 +268,7 @@ function FullQuotePage() {
                                 <p>₹ {quoteData.total}</p>
                                 <span>For 1 Container</span>
                             </div>
-                            <button className="place-order-btn" onClick={handlePlaceOrder}>Place Order</button>
+                            <button className="place-order-btn" onClick={handlePlaceOrderClick}>Place Order</button>
                         </>
                     )
                 )}
@@ -384,6 +404,20 @@ function FullQuotePage() {
                     </div>
                 </div>
             </Drawer>
+            <Dialog open={placeOrderDialogOpen} onClose={handlePlaceOrderDialogClose} style={{ width: '100%', maxWidth: '600px', margin: 'auto' }}>
+                <DialogTitle>Place Order</DialogTitle>
+                <DialogContent>
+                    <p>Are you sure you want to place this order?</p>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handlePlaceOrderDialogClose} color="secondary">
+                        No
+                    </Button>
+                    <Button onClick={handleConfirmPlaceOrder} color="primary">
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <ToastContainer limit={5} autoClose={3000} draggable />
         </div>
     );
