@@ -432,3 +432,47 @@
     transition: transform 0.3s ease;
     z-index: 0;
 }
+
+.vessel-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.vessel-detail-item {
+    display: flex;
+    align-items: start !important;
+    gap: 10px;
+}
+
+.vessel-detail-item h3 {
+    margin-top: 0 !important;
+}
+
+.vessel-detail-item p {
+    font-size: 14px;
+    margin: 2px 0;
+}
+.vessel-detail-content{
+    display: flex;
+    flex-direction: column;
+    align-items: start !important;
+    gap: 0 !important;
+}
+.vessel-info-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: start !important;
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-label p {
+    font-size: 14px;
+    margin: 0;
+}

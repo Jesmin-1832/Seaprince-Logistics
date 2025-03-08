@@ -27,9 +27,13 @@ header nav ul li a{
     outline: none;
     display: grid;
 }
+header nav ul li a svg{
+    font-size: 35px;
+    color: var(--primary-color);
+}
 header nav img {
-    width: 40px;
-    max-height: 40px;
+    width: auto;
+    max-height: 50px;
     width: auto;
     object-fit: contain;
 }

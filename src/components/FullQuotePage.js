@@ -17,6 +17,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 const storedUserData = JSON.parse(localStorage.getItem('userData'));
 
@@ -35,6 +36,7 @@ function FullQuotePage() {
     const [loading, setLoading] = useState(true);
     const [quoteData, setQuoteData] = useState(null);
     const [placeOrderDialogOpen, setPlaceOrderDialogOpen] = useState(false);
+    const [scheduleDrawerOpen, setScheduleDrawerOpen] = useState(false);
 
     useEffect(() => {
         const fetchQuoteData = async () => {
@@ -122,6 +124,10 @@ function FullQuotePage() {
         setDrawerOpen(open);
     };
 
+    const toggleScheduleDrawer = (open) => () => {
+        setScheduleDrawerOpen(open);
+    };
+
     const handleTabChange = (newValue) => {
         setTabValue(newValue);
     };
@@ -164,7 +170,7 @@ function FullQuotePage() {
                 ) : (
                     <div className="full-quote-heading">
                         <h3>Vessel Details</h3>
-                        <button>Vessel Schedule</button>
+                        <button onClick={toggleScheduleDrawer(true)}>Vessel Schedule</button>
                     </div>
                 )}
                 {loading ? (
@@ -208,7 +214,6 @@ function FullQuotePage() {
                                         })} <span>ETA</span>
                                     </p>
                                 </div>
-
                             </div>
                         </div>
                     ) : (
@@ -401,6 +406,51 @@ function FullQuotePage() {
                                 ? (quoteData.vessel.freight_charges + calculateOriginTotal()) * (tabValue === 1 ? 5000 : 1)
                                 : 0}</span>
                         </div>
+                    </div>
+                </div>
+            </Drawer>
+            <Drawer
+                anchor="bottom"
+                open={scheduleDrawerOpen}
+                onClose={toggleScheduleDrawer(false)}
+            >
+                <div className="drawer-content">
+                    <div className="drawer-header">
+                        <h2>Vessel Schedule</h2>
+                        <CloseIcon onClick={toggleScheduleDrawer(false)} />
+                    </div>
+                    <div className="drawer-body">
+                        {quoteData && quoteData.vessel ? (
+                            <>
+                                <div className="vessel-details">
+                                    <div className="vessel-detail-item">
+                                        <EventAvailableIcon />
+                                        <div className="vessel-detail-content">
+                                            <h3>{quoteData.vessel.shipname}</h3>
+                                            <p>Carrier: {quoteData.vessel.carrier}</p>
+                                            <p>Service: {quoteData.vessel.service}</p>
+                                            <p>Terminal: {quoteData.vessel.terminal}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="vessel-info-labels">
+                                    <div className="info-label">
+                                        <EventAvailableIcon />
+                                        <p>Trusted by 1500+ exporters</p>
+                                    </div>
+                                    <div className="info-label">
+                                        <EventAvailableIcon />
+                                        <p>Customer support for every order you place</p>
+                                    </div>
+                                    <div className="info-label">
+                                        <EventAvailableIcon />
+                                        <p>24 x 7 customer support</p>
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <p>No vessel details available.</p>
+                        )}
                     </div>
                 </div>
             </Drawer>

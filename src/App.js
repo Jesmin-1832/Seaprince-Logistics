@@ -63,6 +63,13 @@ function AppContent() {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    const mainElement = document.querySelector('.main');
+    if (mainElement) {
+      mainElement.scrollTo(0, 0);
+    }
+  }, [location]);
+
   const handleNavigationChange = (event, newValue) => {
     setNavValue(newValue);
     switch (newValue) {

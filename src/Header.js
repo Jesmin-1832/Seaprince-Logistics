@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { IconButton, Tooltip } from "@mui/material";
+import { FaCircleUser } from "react-icons/fa6";
 
 function Header({ setAuthenticated }) {
     const navigate = useNavigate();
@@ -99,7 +100,9 @@ function Header({ setAuthenticated }) {
                     <li>
                         <Tooltip title="Profile" arrow>
                             <a href="/profile">
-                                <img src={require("./assets/image/user-logo.png")} alt="Profile" />
+                                <IconButton>
+                                    <FaCircleUser />
+                                </IconButton>
                             </a>
                         </Tooltip>
                     </li>

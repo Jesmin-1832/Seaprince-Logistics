@@ -80,7 +80,6 @@ function HomePage() {
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.indexOf("application/json") !== -1) {
                     const data = await response.json();
-                    console.log('Search results:', data);
                     if (data && data.length > 0) {
                         navigate("/results", { state: { fromName: fromLocation.name, fromCode: fromLocation.code, toName: toLocation.name, toCode: toLocation.code, results: data }, replace: true });
                     } else {

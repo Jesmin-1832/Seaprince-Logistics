@@ -17,7 +17,6 @@ function ServicesPage() {
                 if (!response.ok) throw new Error(`Error: ${response.status}`);
 
                 const data = await response.json();
-                console.log("Fetched Data:", data); // ✅ Debugging: Check API response
 
                 // Ensure we extract the right fields
                 if (data.data && data.data.title && data.data.body) {
